@@ -1,0 +1,71 @@
+@import '../../App.scss';
+
+.form{
+    background-color: #f4f4f4;
+    flex-grow: 1;
+    padding: 20px;
+    border-radius: 2rem;
+    
+}
+
+.form-control{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    padding: 10px;
+}
+.form-group{
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+
+    div{
+        margin: 5px;
+    }
+}
+
+input{
+    width: 100%;
+    height: 30px;
+
+    &[type="text"]{
+    border: none;
+    border-radius: 1rem;
+    outline: none;
+    }
+}
+
+.download-container{
+    @include flex-center
+    
+}
+.submit-container{
+    @include flex-center;
+    
+    button{
+        width: 100%;
+        height: 50px;
+        font-size: 15px;
+        background-color: #5746f5;
+        color: #ffffff;
+    }
+}
+.download{
+    height: 50px;
+    width: 200px;
+    border-radius: 50px;
+    border: none;
+    color: #ffffff;
+    background-color: #000000;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+
+}
+
+.ReactCrop__image {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+  }
+  

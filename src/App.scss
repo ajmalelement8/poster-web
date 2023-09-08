@@ -1,0 +1,39 @@
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main {
+    display: flex;
+
+
+    >* {
+        flex-grow: 1;
+        padding: 50px 50px;
+        width: 50%;
+    }
+}
+
+@mixin flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-grow-1{
+    flex-grow: 1;
+}
+.flex-grow-2{
+    flex-grow: 2;
+}
+.flex-grow-3{
+    flex-grow: 3;
+}
+.flex-grow-4{
+    flex-grow: 4;
+}
+.flex-grow-5{
+    flex-grow: 5;
+}
