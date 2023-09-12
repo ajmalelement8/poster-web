@@ -89,6 +89,7 @@ const CropForm = (props) => {
         setCrop({})
         setSrc(null);
         setCroppedImageUrl(null)
+        dispatch({type:"clear-active-form"})
     }
 
     return (

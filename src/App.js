@@ -8,7 +8,7 @@ import Modal from './components/modal/Modal';
 import TextForm from './components/form/TextForm';
 import CropForm from './components/form/CropForm';
 import GeneratedList from './components/generated-list/GeneratedList';
-import {template} from './components/template/template';
+import { template } from './components/template/template';
 
 const initialState = {
   title: { text: 'title', color: '#ffffff', fontSize: 34 },
@@ -104,10 +104,16 @@ const reducer = (state, action) => {
     case 'active-form':
       if (action.payload && state.images[action.payload].url) {
         return {
-          ...state, activeForm: { ...state.activeForm, type: action.payload, crop: state.images[action.payload].crop, src: state.images[action.payload].url }, modal: {...state.modal,crop:{ isActive: true} }
+          ...state, activeForm: { ...state.activeForm, type: action.payload, crop: state.images[action.payload].crop, src: state.images[action.payload].url }, modal: { ...state.modal, crop: { isActive: true } }
         }
       }
       return state;
+    case 'clear-active-form':
+
+      return {
+        ...state, activeForm: { ...initialState.activeForm }
+      }
+
 
     case 'image-crop':
       const { type, crop, croppedUrl } = action.payload;
@@ -149,11 +155,11 @@ function App() {
   const canvasRef = useRef(null);
 
   // Function to trigger download
-  const handleExport = (elementref,name) => {
+  const handleExport = (elementref, name) => {
     const uri = elementref.current.toDataURL();
     const link = document.createElement('a')
     link.href = uri;
-    link.download = name+".png";
+    link.download = name + ".png";
     link.target = "_blank";
     link.click();
     // window.open(uri, '_blank');
@@ -163,8 +169,8 @@ function App() {
     showModal('template')
   }
 
-  const showModal = (currentModal)=>{
-    dispatch({ type:'show-modal',payload:currentModal})
+  const showModal = (currentModal) => {
+    dispatch({ type: 'show-modal', payload: currentModal })
 
   }
 
@@ -175,7 +181,7 @@ function App() {
   return (
     <div className="App">
       <div className=''>
-        
+
       </div>
 
       <div className="container">
@@ -194,7 +200,7 @@ function App() {
         <CropForm {...canvasData.activeForm} dispatch={dispatch} />
       </Modal>
       <Modal size="lg" hideModal={() => hideModal('template')} showModal={canvasData.modal.template.isActive}>
-        {canvasData.modal.template.isActive&&<GeneratedList action={handleExport} templateList={template.template1} mainContent={canvasData.mainContent} subContent={canvasData.subContent} title={canvasData.title} images={canvasData.images}/>}
+        {canvasData.modal.template.isActive && <GeneratedList action={handleExport} templateList={template.template1} mainContent={canvasData.mainContent} subContent={canvasData.subContent} title={canvasData.title} images={canvasData.images} />}
       </Modal>
       {/* <div className="buttons">
       <button onClick={()=>{setActiveForm('text','main')}}>Main Content</button>
