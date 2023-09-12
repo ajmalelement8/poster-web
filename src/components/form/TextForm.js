@@ -2,7 +2,6 @@ import './Form.scss'
 
 const TextForm = (props) => {
     const { dispatch, handleSubmit } = props;
-    console.log(props)
     return (
         <div className='text-form'>
             <div className="title">

@@ -1,35 +1,29 @@
 import './Form.scss'
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactCrop from "react-image-crop";
 import 'react-image-crop/src/ReactCrop.scss'
 
 const CropForm = (props) => {
-    const [src, setSrc] = useState(null);
-    const [crop, setCrop] = useState({
-        unit: "%",
-        x: 0,
-        y: 0,
-        width: 50,
-        height: 50
-    });
+    const { dispatch,ratio } = props;
+    const [src, setSrc] = useState();
+    const [crop, setCrop] = useState({});
     const [croppedImageUrl, setCroppedImageUrl] = useState(null);
     const imageRef = useRef();
-    console.log(imageRef)
 
-    const onSelectFile = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
+    useEffect(() => {
+        onSelectFile()
+        setCrop(props.crop)
+        onCropComplete(props.crop)
+    }, [props])
+    const onSelectFile = () => {
+        if (props.src) {
             const reader = new FileReader();
             reader.addEventListener("load", () => setSrc(reader.result));
             setCroppedImageUrl(null)
-            reader.readAsDataURL(e.target.files[0]);
-            // console.log(reader)
+            reader.readAsDataURL(props.src);
         }
     };
 
-    const onImageLoaded = (image) => {
-        console.log("hello")
-        imageRef.current = image;
-    };
 
     const onCropComplete = (crop) => {
         makeClientCrop(crop);
@@ -54,9 +48,14 @@ const CropForm = (props) => {
         const canvas = document.createElement("canvas");
         const scaleX = image.naturalWidth / image.width;
         const scaleY = image.naturalHeight / image.height;
-        canvas.width = crop.width;
-        canvas.height = crop.height;
+        const pixelRatio = window.devicePixelRatio;
+        canvas.width = crop.width * pixelRatio * scaleX;
+        canvas.height = crop.height * pixelRatio * scaleY;
         const ctx = canvas.getContext("2d");
+
+
+        ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        ctx.imageSmoothingQuality = 'high';
 
         ctx.drawImage(
             image,
@@ -66,8 +65,8 @@ const CropForm = (props) => {
             crop.height * scaleY,
             0,
             0,
-            crop.width,
-            crop.height
+            crop.width * scaleX,
+            crop.height * scaleY
         );
 
         return new Promise((resolve, reject) => {
@@ -81,33 +80,50 @@ const CropForm = (props) => {
                 const fileUrl = window.URL.createObjectURL(blob);
                 setCroppedImageUrl(fileUrl);
                 resolve(fileUrl);
-            }, "image/jpeg");
+            }, "image/png");
         });
     };
 
+    const handleSubmit = () => {
+        dispatch({ type: 'image-crop', payload: { type: props.type, crop: crop, croppedUrl: croppedImageUrl } })
+    }
+
     return (
-        <div className="">
-            <div>
-                <input type="file" accept="image/*" onChange={onSelectFile} />
+        <div className='crop'>
+
+            <div className="title">
+                Crop {props.type}
             </div>
-            {
-                src && (
-                    <ReactCrop
-                        // src={src}
-                        crop={crop}
-                        ruleOfThirds
-                        onImageLoaded={onImageLoaded}
-                        onComplete={onCropComplete}
-                        onChange={onCropChange}
-                    ><img ref={imageRef} style={{ maxWidth: "200px" }} src={src} alt="" /></ReactCrop>
-                )
-            }
-            {
-                croppedImageUrl && (
-                    <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
-                )
-            }
-        </div >
+            <div className="crop-container">
+                <div className="crop-editor">
+                    <div>
+                        {/* <input type="file" accept="image/*" onChange={onSelectFile} /> */}
+                    </div>
+                    {src && (
+                        <>asdasd
+                            <ReactCrop
+                                // src={src}
+                                crop={crop}
+                                ruleOfThirds
+                                // onImageLoaded={onImageLoaded}
+                                onComplete={onCropComplete}
+                                onChange={onCropChange}
+                                aspect={ratio}
+                            ><img ref={imageRef} style={{ maxWidth: "200px" }} src={src} alt="" /></ReactCrop></>
+                    )
+                    }
+                </div>
+                <div className="crop-preview">
+                    {croppedImageUrl && (
+                        <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
+                    )
+                    }
+                </div>
+            </div >
+            <div className="submit">
+                <button onClick={handleSubmit}>Submit</button>
+            </div>
+        </div>
     );
 }
 

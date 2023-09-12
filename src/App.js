@@ -3,18 +3,47 @@ import './App.css';
 import './App.scss'
 import Form from './components/form/Form';
 import Canvas from './components/canvas/Canvas';
-import { useReducer, useState } from 'react';
+import { useReducer, useRef, useState } from 'react';
 import Modal from './components/modal/Modal';
 import TextForm from './components/form/TextForm';
 import CropForm from './components/form/CropForm';
 
 const initialState = {
-  title: { text: '', color: '', fontSize: 13 },
-  mainContent: { text: '', color: '', fontSize: 13 },
-  subContent: { text: '', color: '', fontSize: 13 },
-  images: { logo: '', watermark: '', image: '', background: '' },
-  modal: { isActive: false, content: '' },
-  form: { activeForm: '', type: '' }
+  title: { text: '', color: '#ffffff', fontSize: 34 },
+  mainContent: { text: '', color: '#377979', fontSize: 38 },
+  subContent: { text: '', color: '#b02439', fontSize: 22 },
+  images: {
+    logo: {
+      url: '',
+      crop: {
+        unit: "%",
+        x: 0,
+        y: 0,
+        width: 50,
+        height: 50,
+      }, croppedUrl: ''
+    }, watermark: {
+      url: '',
+      crop: {
+        unit: "%",
+        x: 0,
+        y: 0,
+        width: 50,
+        height: 50
+      }, croppedUrl: ''
+    }, image: {
+      url: '',
+      crop: {
+        unit: "%",
+        x: 0,
+        y: 0,
+        width: 50,
+        height: 50
+      }, croppedUrl: ''
+    }, background: '#ffffff'
+  },
+  modal: { isActive: false },
+  activeForm: { type: '', src: '', crop: {}, ratio: null }
 }
 
 const reducer = (state, action) => {
@@ -56,27 +85,40 @@ const reducer = (state, action) => {
       return {
         ...state, subContent: { ...state.subContent, fontSize: action.payload }
       }
-    case 'logo':
-      return {
-        ...state, images: { ...state.images, logo: action.payload }
-      }
-    case 'watermark':
-      return {
-        ...state, images: { ...state.images, watermark: action.payload }
-      }
-    case 'image':
-      return {
-        ...state, images: { ...state.images, image: action.payload }
-      }
     case 'background':
       return {
         ...state, images: { ...state.images, background: action.payload }
       }
 
-    case 'active-form':
+    case 'images':
+      const { element, imageUrl } = action.payload;
       return {
-        ...state, form: { ...state.form, activeForm: action.payload.form, type: action.payload.type }
+        ...state, images: { ...state.images, [element]: { ...state.images[element], url: imageUrl } }, activeForm: { type: element, crop: state.images[element].crop, src: imageUrl, ratio:null }, modal: { isActive: true }
       }
+
+    case 'active-form':
+      if (action.payload && state.images[action.payload].url) {
+        return {
+          ...state, activeForm: { ...state.activeForm, type: action.payload, crop: state.images[action.payload].crop, src: state.images[action.payload].url }, modal: { isActive: true }
+        }
+      }
+      return state;
+
+    case 'image-crop':
+      const { type, crop, croppedUrl } = action.payload;
+      if (['logo', 'watermark', 'image'].includes(type)) {
+        return {
+          ...state, images: {
+            ...state.images, [type]: { ...state.images[type], crop, croppedUrl, },
+          }, modal: { isActive: false }
+        };
+      }
+      return state;
+
+    // case 'active-form':
+    //   return {
+    //     ...state, form: { ...state.form, activeForm: action.payload.form, type: action.payload.type }
+    //   }
 
     case 'show-modal':
       return {
@@ -97,25 +139,24 @@ const reducer = (state, action) => {
 
 function App() {
   const [canvasData, dispatch] = useReducer(reducer, initialState)
+  const canvasRef = useRef(null);
 
-  // const setActiveForm = (form, type) => {
-  //   dispatch({ type: 'active-form', payload: { form, type } })
-  //   let content = ''
-  //   if (form == 'text') {
-  //     content = <TextForm dispatch={dispatch} />
-  //     dispatch({ type: 'show-modal', payload: content })
+  console.log(canvasRef)
+  // Function to trigger download
+  const handleExport = () => {
+    const uri = canvasRef.current.toDataURL();
+    const link = document.createElement('a')
+    link.href = uri;
+    link.download = "canvas.png";
+    link.target = "_blank";
+    link.click();
+    // window.open(uri, '_blank');
+    console.log(uri);
+  };
 
-  //   }
-  //   else if(form == 'image') {
-  //     content = <CropForm dispatch={dispatch} />
-
-  //     dispatch({ type: 'show-modal', payload: content })
-  //   }
-  // }
-
-  // const hideModal = ()=>{
-  //   dispatch({ type: 'hide-modal' })
-  // }
+  const hideModal = () => {
+    dispatch({ type: 'hide-modal' })
+  }
 
   return (
     <div className="App">
@@ -126,18 +167,18 @@ function App() {
       <div className="container">
         <div className="main">
           <div className="">
-            <Form state={canvasData} dispatch={dispatch} />
+            <Form download={handleExport} state={canvasData} dispatch={dispatch} />
           </div>
           <div className="">
-            {/* <Canvas canvasData={canvasData} /> */}
-            <CropForm/>
+            <Canvas canvasRef={canvasRef}  {...canvasData} />
+            {/* <CropForm /> */}
           </div>
         </div>
       </div>
 
-      {/* <Modal hideModal={hideModal} showModal={canvasData.modal.isActive}>
-        {canvasData.modal.content}
-      </Modal> */}
+      <Modal hideModal={hideModal} showModal={canvasData.modal.isActive}>
+        <CropForm {...canvasData.activeForm} dispatch={dispatch} />
+      </Modal>
       {/* <div className="buttons">
       <button onClick={()=>{setActiveForm('text','main')}}>Main Content</button>
       <button onClick={()=>{setActiveForm('text','sub')}}>Sub Content</button>
