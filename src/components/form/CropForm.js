@@ -86,6 +86,9 @@ const CropForm = (props) => {
 
     const handleSubmit = () => {
         dispatch({ type: 'image-crop', payload: { type: props.type, crop: crop, croppedUrl: croppedImageUrl } })
+        setCrop({})
+        setSrc(null);
+        setCroppedImageUrl(null)
     }
 
     return (
@@ -121,7 +124,7 @@ const CropForm = (props) => {
                 </div>
             </div >
             <div className="submit">
-                <button onClick={handleSubmit}>Submit</button>
+                {croppedImageUrl&&<button onClick={handleSubmit}>Submit</button>}
             </div>
         </div>
     );

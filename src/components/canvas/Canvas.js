@@ -8,7 +8,8 @@ const generateCanvas = () => {
 }
 
 const Canvas = (props) => {
-  const { title, mainContent, subContent, images, canvasRef } = props;
+  const { title, mainContent, subContent, images, canvasRef, template } = props;
+  console.log(template)
 
 
   const [image, setImage] = useState({});
@@ -30,27 +31,23 @@ const Canvas = (props) => {
     };
   }
 
-  const canvasSize = {
-    canvasWidth: 500,
-    canvasHeight: 750,
-    spacing: 50,
-  }
+  const canvasSize = template.canvasSize
   return (
     <div className='canvas-container'>
       <div id='canvas' className="canvas">
-        <Stage ref={canvasRef} height={canvasSize.canvasHeight} width={canvasSize.canvasWidth}>
+        <Stage height={canvasSize.height} width={canvasSize.width} ref={canvasRef} >
           <Layer>
-            <Rect fill={images.background} x={0} y={0} width={500} height={750} />
-            <Image x={(canvasSize.canvasWidth - 300) / 2} height={300} width={300} y={(canvasSize.canvasHeight - 300) / 2} opacity={0.2} draggable image={image.watermark} />
-            <Image cornerRadius={[0, 180, 0, 0]} x={0} y={canvasSize.canvasHeight - 300} scaleX={1} scaleY={1} width={canvasSize.canvasWidth} height={canvasSize.canvasWidth} image={image.image} draggable />
-            <Rect x={-20} y={220} width={200} height={50} fill='#b02439' cornerRadius={[20, 20, 20, 20]} />
-            <Path x={400} y={0} data='"M106 0L1.17531 0C-1.44083 8.02616 0.0150094 18.4589 12 30C25.3663 42.8712 33.0959 40.7931 41.3763 38.5668C49.8224 36.2961 58.8415 33.8712 75 47C92.174 60.9539 86.3053 75.4839 80.8907 88.8895C76.2164 100.462 71.8805 111.197 83 120C87.7646 123.772 95.9122 126.719 106 129.002V0Z"' fill='#b1283d' scaleX={1} scaleY={1} />
-            <Image x={30} y={30} height={80} width={80} draggable image={image.logo} />
+            <Rect  {...template.background} fill={images.background} />
+            <Image {...template.watermark} x={(canvasSize.width - 300) / 2} y={(canvasSize.height - 300) / 2} opacity={0.2} image={image.watermark} />
+            <Image {...template.image} image={image.image} />
+            <Rect {...template.titleContainer} />
+            <Path {...template.pattern} />
+            <Image {...template.logo} image={image.logo} />
 
 
-            <Text x={30} y={125} fontFamily='Calibri' fontStyle='bold' text={mainContent?.text} fontSize={mainContent?.fontSize} draggable fill={mainContent?.color} />
-            <Text x={30} y={165} fontFamily='Calibri' fontStyle='bold' text={subContent?.text} fontSize={subContent?.fontSize} draggable fill={subContent?.color} />
-            <Text x={30} y={230} fontFamily='Calibri' fontStyle='bold' text={title?.text} fontSize={title?.fontSize} fill={title?.color} />
+            <Text {...template.mainContent} text={mainContent?.text} fontSize={mainContent?.fontSize} fill={mainContent?.color} />
+            <Text {...template.subContent} text={subContent?.text} fontSize={subContent?.fontSize} fill={subContent?.color} />
+            <Text {...template.title} text={title?.text} fontSize={title?.fontSize} fill={title?.color} />
 
 
           </Layer>

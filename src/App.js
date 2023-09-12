@@ -7,11 +7,13 @@ import { useReducer, useRef, useState } from 'react';
 import Modal from './components/modal/Modal';
 import TextForm from './components/form/TextForm';
 import CropForm from './components/form/CropForm';
+import GeneratedList from './components/generated-list/GeneratedList';
+import {template} from './components/template/template';
 
 const initialState = {
-  title: { text: '', color: '#ffffff', fontSize: 34 },
-  mainContent: { text: '', color: '#377979', fontSize: 38 },
-  subContent: { text: '', color: '#b02439', fontSize: 22 },
+  title: { text: 'title', color: '#ffffff', fontSize: 34 },
+  mainContent: { text: 'main content', color: '#377979', fontSize: 38 },
+  subContent: { text: 'sub content', color: '#b02439', fontSize: 22 },
   images: {
     logo: {
       url: '',
@@ -42,7 +44,10 @@ const initialState = {
       }, croppedUrl: ''
     }, background: '#ffffff'
   },
-  modal: { isActive: false },
+  modal: {
+    crop: { isActive: false },
+    template: { isActive: false },
+  },
   activeForm: { type: '', src: '', crop: {}, ratio: null }
 }
 
@@ -93,13 +98,13 @@ const reducer = (state, action) => {
     case 'images':
       const { element, imageUrl } = action.payload;
       return {
-        ...state, images: { ...state.images, [element]: { ...state.images[element], url: imageUrl } }, activeForm: { type: element, crop: state.images[element].crop, src: imageUrl, ratio:null }, modal: { isActive: true }
+        ...state, images: { ...state.images, [element]: { ...state.images[element], url: imageUrl } }, activeForm: { type: element, crop: state.images[element].crop, src: imageUrl, ratio: null }, modal: { ...state.modal, crop: { isActive: true } }
       }
 
     case 'active-form':
       if (action.payload && state.images[action.payload].url) {
         return {
-          ...state, activeForm: { ...state.activeForm, type: action.payload, crop: state.images[action.payload].crop, src: state.images[action.payload].url }, modal: { isActive: true }
+          ...state, activeForm: { ...state.activeForm, type: action.payload, crop: state.images[action.payload].crop, src: state.images[action.payload].url }, modal: {...state.modal,crop:{ isActive: true} }
         }
       }
       return state;
@@ -110,7 +115,7 @@ const reducer = (state, action) => {
         return {
           ...state, images: {
             ...state.images, [type]: { ...state.images[type], crop, croppedUrl, },
-          }, modal: { isActive: false }
+          }, modal: { ...state.modal, crop: { isActive: false } }
         };
       }
       return state;
@@ -121,12 +126,14 @@ const reducer = (state, action) => {
     //   }
 
     case 'show-modal':
+      var currentModal = action.payload
       return {
-        ...state, modal: { ...state.modal, isActive: true, content: action.payload }
+        ...state, modal: { ...state.modal, [currentModal]: { isActive: true } }
       }
     case 'hide-modal':
+      var currentModal = action.payload;
       return {
-        ...state, modal: { ...state.modal, isActive: false, content: '' }
+        ...state, modal: { ...state.modal, [currentModal]: { isActive: false } }
       }
 
     case 'clear':
@@ -141,43 +148,53 @@ function App() {
   const [canvasData, dispatch] = useReducer(reducer, initialState)
   const canvasRef = useRef(null);
 
-  console.log(canvasRef)
   // Function to trigger download
-  const handleExport = () => {
-    const uri = canvasRef.current.toDataURL();
+  const handleExport = (elementref,name) => {
+    const uri = elementref.current.toDataURL();
     const link = document.createElement('a')
     link.href = uri;
-    link.download = "canvas.png";
+    link.download = name+".png";
     link.target = "_blank";
     link.click();
     // window.open(uri, '_blank');
-    console.log(uri);
   };
 
-  const hideModal = () => {
-    dispatch({ type: 'hide-modal' })
+  const handleGenerate = () => {
+    showModal('template')
+  }
+
+  const showModal = (currentModal)=>{
+    dispatch({ type:'show-modal',payload:currentModal})
+
+  }
+
+  const hideModal = (currentModal) => {
+    dispatch({ type: 'hide-modal', payload: currentModal })
   }
 
   return (
     <div className="App">
       <div className=''>
-        Designer
+        
       </div>
 
       <div className="container">
         <div className="main">
           <div className="">
-            <Form download={handleExport} state={canvasData} dispatch={dispatch} />
+            <Form action={handleGenerate} state={canvasData} dispatch={dispatch} />
           </div>
           <div className="">
-            <Canvas canvasRef={canvasRef}  {...canvasData} />
+            <Canvas template={template.template1[0]} canvasRef={canvasRef}  {...canvasData} />
             {/* <CropForm /> */}
           </div>
         </div>
       </div>
 
-      <Modal hideModal={hideModal} showModal={canvasData.modal.isActive}>
+      <Modal hideModal={() => hideModal('crop')} showModal={canvasData.modal.crop.isActive}>
         <CropForm {...canvasData.activeForm} dispatch={dispatch} />
+      </Modal>
+      <Modal size="lg" hideModal={() => hideModal('template')} showModal={canvasData.modal.template.isActive}>
+        {canvasData.modal.template.isActive&&<GeneratedList action={handleExport} templateList={template.template1} mainContent={canvasData.mainContent} subContent={canvasData.subContent} title={canvasData.title} images={canvasData.images}/>}
       </Modal>
       {/* <div className="buttons">
       <button onClick={()=>{setActiveForm('text','main')}}>Main Content</button>

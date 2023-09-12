@@ -1,17 +1,17 @@
 import './Form.scss'
 
-const Form = ({ state, dispatch,download }) => {
+const Form = ({ state, dispatch,action }) => {
     return (
         <div className='form'>
             <div>Editor</div>
             <div className="form-control">
                 <label>Main Content</label>
                 <div className="form-group">
-                    <div className="flex-grow-5">
+                    <div style={{width:'80%'}} className="flex-grow-5">
                         <input className='flex-grow-1' type="text" onChange={(e) => dispatch({ type: 'main-text', payload: e.target.value })} /></div>
-                    <div className="flex-grow-1">
+                    <div style={{width:'10%'}} className="flex-grow-1">
                         <input type="color" value={state.mainContent.color} onChange={(e) => dispatch({ type: 'main-color', payload: e.target.value })} /></div>
-                    <div className="">
+                    <div style={{width:'10%'}} className="">
                         <input type="number" value={state.mainContent.fontSize} min="0" step="1" maxLength="3" size="3" onChange={(e) => dispatch({ type: 'main-font', payload: e.target.value })} /></div>
 
                 </div>
@@ -19,11 +19,11 @@ const Form = ({ state, dispatch,download }) => {
             <div className="form-control">
                 <label>Sub Content</label>
                 <div className="form-group">
-                    <div className="flex-grow-5">
+                    <div style={{width:'80%'}}  className="flex-grow-5">
                         <input type="text" onChange={(e) => dispatch({ type: 'sub-text', payload: e.target.value })} /></div>
-                    <div className="flex-grow-1">
+                    <div style={{width:'10%'}}  className="flex-grow-1">
                         <input type="color" value={state.subContent.color} onChange={(e) => dispatch({ type: 'sub-color', payload: e.target.value })} /></div>
-                    <div className="">
+                    <div style={{width:'10%'}}  className="">
                         <input type="number" value={state.subContent.fontSize} min="0" step="1" maxLength="3" size="3" onChange={(e) => dispatch({ type: 'sub-font', payload: e.target.value })} /></div>
 
                 </div>
@@ -31,11 +31,11 @@ const Form = ({ state, dispatch,download }) => {
             <div className="form-control">
                 <label>Title</label>
                 <div className="form-group">
-                    <div className="flex-grow-5">
+                    <div style={{width:'80%'}}  className="flex-grow-5">
                         <input className='flex-grow-1' type="text" onChange={(e) => dispatch({ type: 'title-text', payload: e.target.value })} /></div>
-                    <div className="flex-grow-1">
+                    <div style={{width:'10%'}}  className="flex-grow-1">
                         <input type="color" value={state.title.color} onChange={(e) => dispatch({ type: 'title-color', payload: e.target.value })} /></div>
-                    <div className="">
+                    <div style={{width:'10%'}}  className="">
                         <input type="number" value={state.title.fontSize} min="0" step="1" maxLength="3" size="3" onChange={(e) => dispatch({ type: 'title-font', payload: e.target.value })} /></div>
 
                 </div>
@@ -81,7 +81,7 @@ const Form = ({ state, dispatch,download }) => {
             </div>
 
             <div className="download-container">
-                <button onClick={download} className="download">Download</button>
+                <button onClick={action} className="download">Generate</button>
             </div>
         </div>
     )
