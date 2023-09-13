@@ -14,6 +14,7 @@ export default GeneratedList
 
 
 const CanvasItem = (props) => {
+    const { mainContent, subContent, title, images, template,action } = props;
     const canvasRef = useRef(null)
     const [src, setSrc] = useState('')
     useEffect(() => {
@@ -31,7 +32,6 @@ const CanvasItem = (props) => {
         setSrc(img.src)
 
     };
-    const { mainContent, subContent, title, images, template,action } = props
     return (
         <div className="canvas-item">
             <div className="canvas-title">

@@ -5,8 +5,8 @@ const Modal = ({ children, showModal,hideModal,size }) => {
         <div className={`modal-container ${showModal && 'active'}`}>
 
             <div className={`modal ${size}`}>
-                <div className="modal-close">
-                    <span onClick={hideModal} className=''>X</span>
+                <div onClick={hideModal} className="modal-close">
+                    <span className=''>X</span>
                 </div>
                 
                 {children}

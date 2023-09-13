@@ -7,9 +7,7 @@ const generateCanvas = () => {
 
 }
 
-const Canvas = (props) => {
-  const { title, mainContent, subContent, images, canvasRef, template } = props;
-  console.log(template)
+const Canvas = ({ title, mainContent, subContent, images, canvasRef, template }) => {
 
 
   const [image, setImage] = useState({});
@@ -31,17 +29,21 @@ const Canvas = (props) => {
     };
   }
 
-  const canvasSize = template.canvasSize
+  const canvasSize = template.canvasSize;
+  const rectangles = template?.rectangles && template.rectangles.map((rect) =><Rect  {...rect}  />  ) 
+  const paths = template?.paths && template.paths.map((path) =><Path  {...path}  />  ) 
   return (
     <div className='canvas-container'>
       <div id='canvas' className="canvas">
         <Stage height={canvasSize.height} width={canvasSize.width} ref={canvasRef} >
           <Layer>
             <Rect  {...template.background} fill={images.background} />
+            {rectangles}
+            {paths}
             <Image {...template.watermark} x={(canvasSize.width - 300) / 2} y={(canvasSize.height - 300) / 2} opacity={0.2} image={image.watermark} />
             <Image {...template.image} image={image.image} />
-            <Rect {...template.titleContainer} />
-            <Path {...template.pattern} />
+            {/* <Rect {...template.titleContainer} /> */}
+            {/* <Path {...template.pattern} /> */}
             <Image {...template.logo} image={image.logo} />
 
 

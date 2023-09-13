@@ -3,12 +3,14 @@ import './App.css';
 import './App.scss'
 import Form from './components/form/Form';
 import Canvas from './components/canvas/Canvas';
-import { useReducer, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import Modal from './components/modal/Modal';
 import TextForm from './components/form/TextForm';
 import CropForm from './components/form/CropForm';
 import GeneratedList from './components/generated-list/GeneratedList';
-import { template } from './components/template/template';
+import TemplatePicker, { templateList } from './components/template/template';
+import Tab, { TabContent } from './components/tab/Tab';
+import SizePicker from './components/sizePicker/SizePicker';
 
 const initialState = {
   title: { text: 'title', color: '#ffffff', fontSize: 34 },
@@ -48,47 +50,23 @@ const initialState = {
     crop: { isActive: false },
     template: { isActive: false },
   },
-  activeForm: { type: '', src: '', crop: {}, ratio: null }
+  activeForm: { type: '', src: '', crop: {}, ratio: null },
+  activeTemplate: { templateIndex: 0, sizeIndex: 0 }
 }
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'title-text':
+    case 'text':
       return {
-        ...state, title: { ...state.title, text: action.payload }
+        ...state, [action.payload.field]: { ...state[action.payload.field], text: action.payload.value }
       }
-    case 'title-color':
+    case 'color':
       return {
-        ...state, title: { ...state.title, color: action.payload }
+        ...state, [action.payload.field]: { ...state[action.payload.field], color: action.payload.value }
       }
-    case 'title-font':
+    case 'font':
       return {
-        ...state, title: { ...state.title, fontSize: action.payload }
-      }
-    case 'main-text':
-      return {
-        ...state, mainContent: { ...state.mainContent, text: action.payload }
-      }
-    case 'main-color':
-      return {
-        ...state, mainContent: { ...state.mainContent, color: action.payload }
-      }
-    case 'main-font':
-      return {
-        ...state, mainContent: { ...state.mainContent, fontSize: action.payload }
-      }
-    case 'sub-text':
-      return {
-        ...state, subContent: { ...state.subContent, text: action.payload }
-      }
-    case 'sub-color':
-      return {
-        ...state, subContent: { ...state.subContent, color: action.payload }
-      }
-
-    case 'sub-font':
-      return {
-        ...state, subContent: { ...state.subContent, fontSize: action.payload }
+        ...state, [action.payload.field]: { ...state[action.payload.field], fontSize: action.payload.value }
       }
     case 'background':
       return {
@@ -97,9 +75,14 @@ const reducer = (state, action) => {
 
     case 'images':
       const { element, imageUrl } = action.payload;
-      return {
-        ...state, images: { ...state.images, [element]: { ...state.images[element], url: imageUrl } }, activeForm: { type: element, crop: state.images[element].crop, src: imageUrl, ratio: null }, modal: { ...state.modal, crop: { isActive: true } }
+      if (imageUrl) {
+        return {
+          ...state, images: { ...state.images, [element]: { ...state.images[element], url: imageUrl } }, activeForm: { type: element, crop: state.images[element].crop, src: imageUrl, ratio: null }, modal: { ...state.modal, crop: { isActive: true } }
+        }
       }
+      return {
+        ...state, images: { ...state.images, [element]: { ...state.images[element], url: null, croppedUrl: null } }, modal: { ...state.modal, crop: { isActive: true } }
+      };
 
     case 'active-form':
       if (action.payload && state.images[action.payload].url) {
@@ -109,7 +92,6 @@ const reducer = (state, action) => {
       }
       return state;
     case 'clear-active-form':
-
       return {
         ...state, activeForm: { ...initialState.activeForm }
       }
@@ -142,6 +124,11 @@ const reducer = (state, action) => {
         ...state, modal: { ...state.modal, [currentModal]: { isActive: false } }
       }
 
+    case 'template':
+      return {
+        ...state, activeTemplate: { ...state.activeTemplate, ...action.payload }
+      }
+
     case 'clear':
       return initialState
 
@@ -152,8 +139,12 @@ const reducer = (state, action) => {
 
 function App() {
   const [canvasData, dispatch] = useReducer(reducer, initialState)
+  const [canavsSrc, setCanvasSrc] = useState(null)
+  const [templates,setTemplates]=useState([])
   const canvasRef = useRef(null);
-
+useEffect(()=>{
+  setTemplates(templateList)
+},[])
   // Function to trigger download
   const handleExport = (elementref, name) => {
     const uri = elementref.current.toDataURL();
@@ -178,6 +169,23 @@ function App() {
     dispatch({ type: 'hide-modal', payload: currentModal })
   }
 
+  useEffect(() => {
+    if (canvasRef.current) {
+      convertCanvasToImage()
+    }
+  }, [canvasData.title,canvasData.mainContent,canvasData.subContent,canvasData.images,canvasData.activeTemplate])
+
+  const convertCanvasToImage = () => {
+    const canvas = canvasRef.current;
+    const dataURL = canvas.toDataURL();
+
+    const img = new Image();
+    img.src = dataURL;
+    setCanvasSrc(img.src)
+
+
+  };
+
   return (
     <div className="App">
       <div className=''>
@@ -186,11 +194,28 @@ function App() {
 
       <div className="container">
         <div className="main">
-          <div className="">
-            <Form action={handleGenerate} state={canvasData} dispatch={dispatch} />
+          <div className="main-controls">
+            <Tab>
+              <TabContent label="Text">
+                <Form action={handleGenerate} state={canvasData} dispatch={dispatch} />
+              </TabContent>
+              <TabContent label="Size">
+                {templates&&<SizePicker template={templates[canvasData.activeTemplate.templateIndex]} action={handleGenerate} state={canvasData} dispatch={dispatch} />}
+              </TabContent>
+              <TabContent label="Template">
+                <TemplatePicker templates={templates} action={handleGenerate} state={canvasData} dispatch={dispatch} />
+              </TabContent>
+
+            </Tab>
+
           </div>
-          <div className="">
-            <Canvas template={template.template1[0]} canvasRef={canvasRef}  {...canvasData} />
+          <div className="main-preview">
+            <div className="main-canvas">
+              <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef}  {...canvasData} />
+            </div>
+            <div className="main-img">
+              <img data-index={canvasData.activeTemplate.templateIndex} src={canavsSrc} alt="" />
+            </div>
             {/* <CropForm /> */}
           </div>
         </div>
@@ -200,7 +225,7 @@ function App() {
         <CropForm {...canvasData.activeForm} dispatch={dispatch} />
       </Modal>
       <Modal size="lg" hideModal={() => hideModal('template')} showModal={canvasData.modal.template.isActive}>
-        {canvasData.modal.template.isActive && <GeneratedList action={handleExport} templateList={template.template1} mainContent={canvasData.mainContent} subContent={canvasData.subContent} title={canvasData.title} images={canvasData.images} />}
+        {canvasData.modal.template.isActive && <GeneratedList action={handleExport} templateList={templateList[canvasData.activeTemplate.templateIndex]} mainContent={canvasData.mainContent} subContent={canvasData.subContent} title={canvasData.title} images={canvasData.images} />}
       </Modal>
       {/* <div className="buttons">
       <button onClick={()=>{setActiveForm('text','main')}}>Main Content</button>
