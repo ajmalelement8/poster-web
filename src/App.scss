@@ -1,8 +1,11 @@
-.App{
+.App {
     display: flex;
     min-height: 100vh;
     align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
 }
+
 .container {
     max-width: 1200px;
     width: 100%;
@@ -13,63 +16,140 @@
 
 .main {
     display: flex;
+    justify-content: space-between;
+    min-height: 80vh;
     height: 100%;
     // background-color: red;
 
-    .main-controls{
+    .main-controls {
         // background-color: red;
-        height: 100%;
+        height: 80vh;
+        padding: 10px;
+        width: 30%;
+
     }
-    .main-preview{
+
+    .main-preview {
         // background-color: blue;
-        // height: 100%;    
+        height: 80vh;
+        padding: 10px;
 
-        .main-canvas{
-            display: none;
-        }
-
-        .main-img{
+        .main-canvas {
+            // display: none;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
+            // padding: 10px;
             height: 100%;
-            padding: 10px;
-            background-color: #f4f4f4;
+            // background-color: #f4f4f4;
             border-radius: 20px;
 
-            img{
+            canvas {
+                width: 100%;
+                border-radius: 20px;
+            }
+        }
+
+        .main-img {
+            display: none;
+            // display: flex;
+            // align-items: center;
+            // justify-content: center;
+            // width: 100%;
+            // height: 100%;
+            // padding: 10px;
+            // background-color: #f4f4f4;
+            // border-radius: 20px;
+
+            img {
                 width: 100%;
                 border-radius: 20px;
             }
         }
     }
-    >* {
+
+    >div {
         flex-grow: 1;
-        margin: 5px;
-        padding: 50px 50px;
+        // margin: 5px;
+        // padding: 0px 50px 50px 0px;
         width: 50%;
     }
 }
 
-@mixin flex-center{
+@mixin flex-center {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.flex-grow-1{
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-grow-1 {
     flex-grow: 1;
 }
-.flex-grow-2{
+
+.flex-grow-2 {
     flex-grow: 2;
 }
-.flex-grow-3{
+
+.flex-grow-3 {
     flex-grow: 3;
 }
-.flex-grow-4{
+
+.flex-grow-4 {
     flex-grow: 4;
 }
-.flex-grow-5{
+
+.flex-grow-5 {
     flex-grow: 5;
+}
+
+
+.w-10 {
+    width: 10%;
+}
+
+.w-20 {
+    width: 20%;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-60 {
+    width: 60%;
+}
+
+.w-70 {
+    width: 70%;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.w-90 {
+    width: 90%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-100{
+    height: 100%;
 }

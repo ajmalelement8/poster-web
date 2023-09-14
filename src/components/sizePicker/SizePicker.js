@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './SizePicker.scss'
 
 const SizePicker = ({ template, dispatch }) => {
-    console.log(template)
+    
     const [activeSize, setActiveSize] = useState(0)
     useEffect(() => {
         dispatch({ type: 'template', payload: {sizeIndex:activeSize } })
@@ -23,7 +23,7 @@ const SizePicker = ({ template, dispatch }) => {
 export default SizePicker
 
 const SizeItem = ({ template, action, style, index }) => {
-    // console.log(index)
+    
     return (
         <div onClick={() => action(index)} className={`size-card ${style}`}>
             <div className="size-name">{template.name}</div>

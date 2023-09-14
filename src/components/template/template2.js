@@ -65,8 +65,8 @@ const template2 = [
             cornerRadius: 180
         },
         watermark: {
-            width: 300,
-            height: 300,
+            width: 100,
+            height: 100,
         },
         image: {
             x: 70,
@@ -98,7 +98,16 @@ const template2 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-        title: {
+        
+        btnBox: {
+            x: 40,
+            y: 185,
+            width: 300,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [10, 20, 20, 10],
+        },
+        btnText: {
             x: 70,
             y: 200,
             text: 'Taste it now',
@@ -160,8 +169,8 @@ const template2 = [
             fill: '#f5be62',
         },
         watermark: {
-            width: 500,
-            height: 500,
+            width: 100,
+            height: 100,
         },
         image: {
             x: 70,
@@ -193,7 +202,15 @@ const template2 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-        title: {
+        btnBox: {
+            x: 40,
+            y: 185,
+            width: 300,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [10, 20, 20, 10],
+        },
+        btnText: {
             x: 70,
             y: 200,
             text: 'Taste it now',
@@ -258,8 +275,8 @@ const template2 = [
             fill: '#f5be62',
         },
         watermark: {
-            width: 200,
-            height: 200,
+            width: 100,
+            height: 100,
         },
         image: {
             x: 50,
@@ -291,7 +308,15 @@ const template2 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-        title: {
+        btnBox: {
+            x: 20,
+            y: 185,
+            width: 300,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [10, 20, 20, 10],
+        },
+        btnText: {
             x: 50,
             y: 200,
             text: 'Taste it now',
@@ -356,8 +381,8 @@ const template2 = [
             fill: '#f5be62',
         },
         watermark: {
-            width: 300,
-            height: 300,
+            width: 100,
+            height: 100,
         },
         image: {
             x: 65,
@@ -389,7 +414,15 @@ const template2 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-        title: {
+        btnBox: {
+            x: 35,
+            y: 185,
+            width: 300,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [10, 20, 20, 10],
+        },
+        btnText: {
             x: 65,
             y: 200,
             text: 'Taste it now',
@@ -454,9 +487,9 @@ const template2 = [
             width: 1200,
             fill: '#f5be62',
         },
-        watermark: {
-            width: 300,
-            height: 300,
+        100: {
+            width: 100,
+            height: 100,
         },
         image: {
             x: 320,
@@ -488,7 +521,15 @@ const template2 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-        title: {
+        btnBox: {
+            x: 290,
+            y: 155,
+            width: 300,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [10, 20, 20, 10],
+        },
+        btnText: {
             x: 320,
             y: 170,
             text: 'Taste it now',

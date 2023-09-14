@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import Canvas from '../canvas/Canvas'
 import './GeneratedList.scss'
-const GeneratedList = ({ templateList, mainContent, subContent, title, images,action }) => {
-    const dataList = templateList?.map((template, index) => <CanvasItem key={index} action={action} mainContent={mainContent} subContent={subContent} title={title} images={images} template={template} />)
+const GeneratedList = ({ templateList, mainContent, subContent, btnText, images,action }) => {
+    const dataList = templateList?.map((template, index) => <CanvasItem key={index} action={action} mainContent={mainContent} subContent={subContent} btnText={btnText} images={images} template={template} />)
     return (
         <div className="generate-list-container">
             {dataList}
@@ -14,7 +14,7 @@ export default GeneratedList
 
 
 const CanvasItem = (props) => {
-    const { mainContent, subContent, title, images, template,action } = props;
+    const { mainContent, subContent, btnText, images, template,action } = props;
     const canvasRef = useRef(null)
     const [src, setSrc] = useState('')
     useEffect(() => {

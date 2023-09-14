@@ -2,10 +2,11 @@
 
 .size-container {
     background-color: #f4f4f4;
-    padding: 10px;
-    border-radius: 20px;
-    min-height: 80vh;
+    // padding: 10px;
+    border-radius: 0 20px 20px 0;
+    // max-height: 80vh;
     height: 100%;
+    overflow: auto;
 
     .size-list {
         // display: flex;
@@ -13,8 +14,9 @@
         justify-content: space-between;
         color: #ffffff;
         font-size: 20px;
-        max-height: 80vh;
-        overflow: auto;
+        // max-height: 80vh;
+        height: 100%;
+        overflow: visible;
 
     }
 

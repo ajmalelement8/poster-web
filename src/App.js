@@ -13,7 +13,7 @@ import Tab, { TabContent } from './components/tab/Tab';
 import SizePicker from './components/sizePicker/SizePicker';
 
 const initialState = {
-  title: { text: 'title', color: '#ffffff', fontSize: 34 },
+  btnText: { text: 'button', color: '#ffffff', fontSize: 34 },
   mainContent: { text: 'main content', color: '#377979', fontSize: 38 },
   subContent: { text: 'sub content', color: '#b02439', fontSize: 22 },
   images: {
@@ -44,7 +44,7 @@ const initialState = {
         width: 50,
         height: 50
       }, croppedUrl: ''
-    }, background: '#ffffff'
+    }, background: ""
   },
   modal: {
     crop: { isActive: false },
@@ -140,11 +140,11 @@ const reducer = (state, action) => {
 function App() {
   const [canvasData, dispatch] = useReducer(reducer, initialState)
   const [canavsSrc, setCanvasSrc] = useState(null)
-  const [templates,setTemplates]=useState([])
+  const [templates, setTemplates] = useState([])
   const canvasRef = useRef(null);
-useEffect(()=>{
-  setTemplates(templateList)
-},[])
+  useEffect(() => {
+    setTemplates(templateList)
+  }, [])
   // Function to trigger download
   const handleExport = (elementref, name) => {
     const uri = elementref.current.toDataURL();
@@ -173,7 +173,7 @@ useEffect(()=>{
     if (canvasRef.current) {
       convertCanvasToImage()
     }
-  }, [canvasData.title,canvasData.mainContent,canvasData.subContent,canvasData.images,canvasData.activeTemplate])
+  }, [canvasData.btnText, canvasData.mainContent, canvasData.subContent, canvasData.images, canvasData.activeTemplate])
 
   const convertCanvasToImage = () => {
     const canvas = canvasRef.current;
@@ -200,7 +200,7 @@ useEffect(()=>{
                 <Form action={handleGenerate} state={canvasData} dispatch={dispatch} />
               </TabContent>
               <TabContent label="Size">
-                {templates&&<SizePicker template={templates[canvasData.activeTemplate.templateIndex]} action={handleGenerate} state={canvasData} dispatch={dispatch} />}
+                {templates && <SizePicker template={templates[canvasData.activeTemplate.templateIndex]} action={handleGenerate} state={canvasData} dispatch={dispatch} />}
               </TabContent>
               <TabContent label="Template">
                 <TemplatePicker templates={templates} action={handleGenerate} state={canvasData} dispatch={dispatch} />
@@ -211,11 +211,11 @@ useEffect(()=>{
           </div>
           <div className="main-preview">
             <div className="main-canvas">
-              <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef}  {...canvasData} />
+              <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
             </div>
-            <div className="main-img">
+            {/* <div className="main-img">
               <img data-index={canvasData.activeTemplate.templateIndex} src={canavsSrc} alt="" />
-            </div>
+            </div> */}
             {/* <CropForm /> */}
           </div>
         </div>
@@ -225,12 +225,12 @@ useEffect(()=>{
         <CropForm {...canvasData.activeForm} dispatch={dispatch} />
       </Modal>
       <Modal size="lg" hideModal={() => hideModal('template')} showModal={canvasData.modal.template.isActive}>
-        {canvasData.modal.template.isActive && <GeneratedList action={handleExport} templateList={templateList[canvasData.activeTemplate.templateIndex]} mainContent={canvasData.mainContent} subContent={canvasData.subContent} title={canvasData.title} images={canvasData.images} />}
+        {canvasData.modal.template.isActive && <GeneratedList action={handleExport} templateList={templateList[canvasData.activeTemplate.templateIndex]} mainContent={canvasData.mainContent} subContent={canvasData.subContent} btnText={canvasData.btnText} images={canvasData.images} />}
       </Modal>
       {/* <div className="buttons">
       <button onClick={()=>{setActiveForm('text','main')}}>Main Content</button>
       <button onClick={()=>{setActiveForm('text','sub')}}>Sub Content</button>
-      <button onClick={()=>{setActiveForm('text','title')}}>Title Content</button>
+      <button onClick={()=>{setActiveForm('text','btnText')}}>Title Content</button>
       <button onClick={()=>{setActiveForm('image','image')}}>Image Content</button>
       <button onClick={()=>{setActiveForm('image','logo')}}>Logo Content</button>
       <button onClick={()=>{setActiveForm('image','watermark')}}>Watermark Content</button>

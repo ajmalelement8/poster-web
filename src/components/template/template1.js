@@ -5,14 +5,7 @@ const template1 = [
         name: 'pinSize',
         preview: process.env.PUBLIC_URL + '/assets/images/templates/template1.png',
         rectangles: [
-            {
-                x: 0,
-                y: 220,
-                width: 200,
-                height: 50,
-                fill: '#b02439',
-                cornerRadius: [0, 20, 20, 0],
-            },
+
 
         ],
         paths: [
@@ -43,8 +36,8 @@ const template1 = [
             fill: '#ffffff'
         },
         watermark: {
-            width: 300,
-            height: 300,
+            width: 100,
+            height: 100,
         },
         image: {
             x: 0,
@@ -79,7 +72,15 @@ const template1 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-        title: {
+        btnBox: {
+            x: 0,
+            y: 220,
+            width: 200,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [0, 20, 20, 0],
+        },
+        btnText: {
             x: 30,
             y: 235,
             text: 'Taste it now',
@@ -93,14 +94,7 @@ const template1 = [
         name: 'postSize',
 
         rectangles: [
-            {
-                x: 0,
-                y: 220,
-                width: 200,
-                height: 50,
-                fill: '#b02439',
-                cornerRadius: [0, 20, 20, 0],
-            },
+
 
         ],
         paths: [
@@ -132,8 +126,8 @@ const template1 = [
             fill: '#ffffff'
         },
         watermark: {
-            width: 500,
-            height: 500,
+            width: 150,
+            height: 150,
         },
         image: {
             x: 0,
@@ -166,7 +160,15 @@ const template1 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-        title: {
+        btnBox: {
+            x: 0,
+            y: 220,
+            width: 200,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [0, 20, 20, 0],
+        },
+        btnText: {
             x: 30,
             y: 235,
             text: 'Taste it now',
@@ -179,14 +181,6 @@ const template1 = [
     {
         name: 'storySize',
         rectangles: [
-            {
-                x: 0,
-                y: 260,
-                width: 200,
-                height: 50,
-                fill: '#b02439',
-                cornerRadius: [0, 20, 20, 0],
-            },
 
         ],
         paths: [
@@ -218,8 +212,8 @@ const template1 = [
             fill: '#ffffff'
         },
         watermark: {
-            width: 200,
-            height: 200,
+            width: 100,
+            height: 100,
         },
         image: {
             x: -140,
@@ -252,7 +246,16 @@ const template1 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-        title: {
+        btnBox: {
+            x: 0,
+            y: 260,
+            width: 200,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [0, 20, 20, 0],
+        },
+
+        btnText: {
             x: 30,
             y: 275,
             text: 'Taste it now',
@@ -265,14 +268,6 @@ const template1 = [
     {
         name: 'verticalSize',
         rectangles: [
-            {
-                x: 0,
-                y: 230,
-                width: 200,
-                height: 50,
-                fill: '#b02439',
-                cornerRadius: [0, 20, 20, 0],
-            },
 
         ],
         paths: [
@@ -304,8 +299,8 @@ const template1 = [
             fill: '#ffffff'
         },
         watermark: {
-            width: 300,
-            height: 300,
+            width: 100,
+            height: 100,
         },
         image: {
             x: 0,
@@ -338,7 +333,15 @@ const template1 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-        title: {
+        btnBox: {
+            x: 0,
+            y: 230,
+            width: 200,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [0, 20, 20, 0],
+        },
+        btnText: {
             x: 30,
             y: 245,
             text: 'Taste it now',
@@ -351,14 +354,7 @@ const template1 = [
     {
         name: 'landscapeSize',
         rectangles: [
-            {
-                x: 0,
-                y: 130,
-                width: 300,
-                height: 50,
-                fill: '#b02439',
-                cornerRadius: [0, 20, 20, 0],
-            },
+
         ],
         paths: [
             {
@@ -388,8 +384,8 @@ const template1 = [
             fill: '#ffffff'
         },
         watermark: {
-            width: 300,
-            height: 300,
+            width: 100,
+            height: 100,
         },
         image: {
             x: 0,
@@ -423,8 +419,15 @@ const template1 = [
             fill: '#b02439',
             fontStyle: 'bold',
         },
-
-        title: {
+        btnBox: {
+            x: 0,
+            y: 130,
+            width: 300,
+            height: 50,
+            fill: '#b02439',
+            cornerRadius: [0, 20, 20, 0],
+        },
+        btnText: {
             x: 30,
             y: 145,
             text: 'Taste it now',

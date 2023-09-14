@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import './Tab.scss'
 
-const Tab = ({ children }) => {
+const Tab = ({ children,dir }) => {
     const [activeTab, setActiveTab] = useState(0);
 
     const handleTabClick = (index) => {
         setActiveTab(index);
     }
     return (
-        <div className="tabs-container">
+        <div className={`tabs-container ${dir}`}>
             <div className="tabs">
                 {React.Children.map(children, (child, index) => (
                     <div
@@ -34,7 +34,7 @@ const Tab = ({ children }) => {
 }
 
 export const TabContent = ({ children }) => {
-    return <div className="tab-content">{children}</div>;
+    return children;
 };
 
 
