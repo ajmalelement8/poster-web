@@ -12,7 +12,7 @@ const Form = ({ state, dispatch,action }) => {
                     <div style={{width:'20%'}} className="flex-grow-1">
                         <input type="color" value={state.mainContent.color} onChange={(e) => dispatch({ type: 'color', payload:{field:'mainContent',value: e.target.value } })} /></div>
                     <div style={{width:'20%'}} className="">
-                        <input type="number" value={state.mainContent.fontSize} min="0" step="1" maxLength="3" size="3" onChange={(e) => dispatch({ type: 'font', payload:{field:'mainContent}',value: e.target.value } })} /></div>
+                        <input type="number" value={state.mainContent.fontSize} min="0" step="1" maxLength="3" size="3" onChange={(e) => dispatch({ type: 'font', payload:{field:'mainContent',value: e.target.value } })} /></div>
 
                 </div>
             </div>
@@ -36,7 +36,7 @@ const Form = ({ state, dispatch,action }) => {
                     <div style={{width:'20%'}}  className="flex-grow-1">
                         <input type="color" value={state.btnText.color} onChange={(e) => dispatch({ type: 'color', payload:{field:'btnText',value: e.target.value } })} /></div>
                     <div style={{width:'20%'}}  className="">
-                        <input type="number" value={state.btnText.fontSize} min="0" step="1" maxLength="3" size="3" onChange={(e) => dispatch({ type: 'font', payload:{field:'btnText}',value: e.target.value } })} /></div>
+                        <input type="number" value={state.btnText.fontSize} min="0" step="1" maxLength="3" size="3" onChange={(e) => dispatch({ type: 'font', payload:{field:'btnText',value: e.target.value } })} /></div>
 
                 </div>
             </div>

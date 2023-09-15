@@ -65,8 +65,10 @@ const reducer = (state, action) => {
         ...state, [action.payload.field]: { ...state[action.payload.field], color: action.payload.value }
       }
     case 'font':
+      console.log(action.payload.field)
+
       return {
-        ...state, [action.payload.field]: { ...state[action.payload.field], fontSize: action.payload.value }
+        ...state, [action.payload.field]: { ...state[action.payload.field], fontSize: Number(action.payload.value) }
       }
     case 'background':
       return {
@@ -185,7 +187,12 @@ function App() {
 
 
   };
+  // console.log(templates)
 
+  useEffect(()=>{
+    // console.log(templates)
+  },[templates]
+  )
   return (
     <div className="App">
       <div className=''>
@@ -195,13 +202,13 @@ function App() {
       <div className="container">
         <div className="main">
           <div className="main-controls">
-            <Tab>
+            <Tab dir="vertical">
               <TabContent label="Text">
                 <Form action={handleGenerate} state={canvasData} dispatch={dispatch} />
               </TabContent>
-              <TabContent label="Size">
+              {/* <TabContent label="Size">
                 {templates && <SizePicker template={templates[canvasData.activeTemplate.templateIndex]} action={handleGenerate} state={canvasData} dispatch={dispatch} />}
-              </TabContent>
+              </TabContent> */}
               <TabContent label="Template">
                 <TemplatePicker templates={templates} action={handleGenerate} state={canvasData} dispatch={dispatch} />
               </TabContent>
@@ -211,7 +218,25 @@ function App() {
           </div>
           <div className="main-preview">
             <div className="main-canvas">
-              <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
+              <Tab dir="horizontal">
+                <TabContent label="Pin Size">
+                  <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][0]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
+                </TabContent>
+                <TabContent label="Post Size">
+                  <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][1]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
+                </TabContent>
+                <TabContent label="Story Size">
+                  <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][2]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
+                </TabContent>
+                <TabContent label="Vertical Size">
+                  <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][3]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
+                </TabContent>
+                <TabContent label="Landscape Size">
+                  <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][4]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
+                </TabContent>
+
+              </Tab>
+              {/* <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} /> */}
             </div>
             {/* <div className="main-img">
               <img data-index={canvasData.activeTemplate.templateIndex} src={canavsSrc} alt="" />

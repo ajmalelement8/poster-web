@@ -25,7 +25,7 @@ const Tab = ({ children,dir }) => {
                         className={`tab-pane ${activeTab === index ? 'active' : ''}`}
                         onClick={() => handleTabClick(index)}
                     >
-                        {child}
+                        {activeTab==index && child}
                     </div>
                 )}
             </div>

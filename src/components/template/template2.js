@@ -487,7 +487,7 @@ const template2 = [
             width: 1200,
             fill: '#f5be62',
         },
-        100: {
+        watermark: {
             width: 100,
             height: 100,
         },

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import './Canvas.scss'
-import { Stage, Layer, Rect, Text, Path, Image, Group } from 'react-konva';
+import { Stage, Layer, Rect, Text, Path, Image, Group, Transformer } from 'react-konva';
 
 
 
 
-const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template, preview,activeTemplate,setTemplates }) => {
+const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template, preview, activeTemplate, setTemplates }) => {
 
 
   const [image, setImage] = useState({});
@@ -48,18 +48,18 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
         // newWidth = parentElem.clientWidth;
         // newHeight = newWidth * aspectRatioHeight;
         if (canvasSize.height > canvasSize.width) {
-          console.log("ch>cw")
-          console.log("height ", canvasSize.height, parentElem.clientHeight);
-          console.log("width ", canvasSize.width, parentElem.clientWidth);
+          // console.log("ch>cw")
+          // console.log("height ", canvasSize.height, parentElem.clientHeight);
+          // console.log("width ", canvasSize.width, parentElem.clientWidth);
 
           newHeight = parentElem.clientHeight;
           newWidth = newHeight * aspectRatioWidth;
         }
         else {
 
-          console.log("ch<cw")
-          console.log("height ", canvasSize.height, parentElem.clientHeight);
-          console.log("width ", canvasSize.width, parentElem.clientWidth);
+          // console.log("ch<cw")
+          // console.log("height ", canvasSize.height, parentElem.clientHeight);
+          // console.log("width ", canvasSize.width, parentElem.clientWidth);
 
           newWidth = parentElem.clientWidth;
           newHeight = newWidth * aspectRatioHeight;
@@ -67,18 +67,18 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
       }
       else {
         if (canvasSize.height > canvasSize.width) {
-          console.log("ch>cw")
-          console.log("height ", canvasSize.height, parentElem.clientHeight);
-          console.log("width ", canvasSize.width, parentElem.clientWidth);
+          // console.log("ch>cw")
+          // console.log("height ", canvasSize.height, parentElem.clientHeight);
+          // console.log("width ", canvasSize.width, parentElem.clientWidth);
 
           newHeight = parentElem.clientHeight;
           newWidth = newHeight * aspectRatioWidth;
         }
         else {
 
-          console.log("ch<cw")
-          console.log("height ", canvasSize.height, parentElem.clientHeight);
-          console.log("width ", canvasSize.width, parentElem.clientWidth);
+          // console.log("ch<cw")
+          // console.log("height ", canvasSize.height, parentElem.clientHeight);
+          // console.log("width ", canvasSize.width, parentElem.clientWidth);
 
           newWidth = parentElem.clientWidth;
           newHeight = newWidth * aspectRatioHeight;
@@ -99,7 +99,7 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
       canvasContainer.classList.add("canvas-parent")
 
     }
-  }, [template.canvasSize, window.resize])
+  }, [template.canvasSize, window.resize]);
 
   function loadImage(src, setFunction, type) {
     const image = new window.Image();
@@ -108,9 +108,82 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
       setFunction((prevstate) => ({ ...prevstate, [type]: image }));
     };
   }
-  const handleElementDrag = (event,name,element)=>{
-    setTemplates((prevState)=>([...prevState,[...prevState[activeTemplate.templateIndex],{...template,[name]:{...element,x:event.target.x,y:event.target.y}}]]))
+  const handleElementDrag = (event, name) => {
+
+    setTemplates((prevState) => {
+      const updatedTemplates = [...prevState];     //all templates
+      const activeIndex = updatedTemplates[activeTemplate.templateIndex]; //current template
+      const activeItemIndex = activeIndex.findIndex(item => item.name == template.name);   //curent template size
+
+      //template - current template with the size
+      const updatedTemplateItem = {
+        ...template,
+        [name]: { ...template[name], x: event.target.x(), y: event.target.y() },
+      };
+
+      activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
+      // console.log(activeItemIndex,template.name,updatedTemplates)
+
+      return updatedTemplates;
+    }
+    )
+    // setTemplates(['asd0','asdasd','asdasd'])
   }
+  const handleGroupDrag = (event, elements) => {
+    setTemplates((prevState) => {
+      const updatedTemplates = [...prevState];   //all templates
+      const activeIndex = updatedTemplates[activeTemplate.templateIndex];   //current templates
+      const activeItemIndex = activeIndex.findIndex(item => item.name == template.name);  //curent template size
+      const updatedTemplateItem = { ...template }; //current template with size
+
+      elements.forEach((element) => {
+        let elem = event.target.findOne((node) => {
+          return node.attrs.name === element;
+        });
+        // console.log(elem.x())
+        updatedTemplateItem[element] = {
+          ...template[element],
+          x: template[element].x + event.target.x(),
+          y: template[element].y + event.target.y()
+          // x: elem.x(),
+          // y: elem.y()
+        };
+        console.log("x", template[element].x, event.target.x(), template[element].x + event.target.x());
+        console.log("y", template[element].y, event.target.y(), template[element].y + event.target.y());
+      })
+
+      activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
+
+
+      return updatedTemplates;
+    });
+  };
+
+  const handleTransform = (name,x,y,width,height) => {
+
+    setTemplates((prevState) => {
+      const updatedTemplates = [...prevState];     //all templates
+      const activeIndex = updatedTemplates[activeTemplate.templateIndex]; //current template
+      const activeItemIndex = activeIndex.findIndex(item => item.name == template.name);   //curent template size
+
+      //template - current template with the size
+      const updatedTemplateItem = {
+        ...template,
+        [name]: { ...template[name], x:x,y:y,width:width,height:height},
+      };
+
+      activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
+      // console.log(activeItemIndex,template.name,updatedTemplates)
+
+      return updatedTemplates;
+    }
+    )
+    // setTemplates(['asd0','asdasd','asdasd'])
+  }
+
+  // selectable images
+  const [selectors, setSelectors] = useState([template.watermark, template.image, template.logo])
+  const [selectedId, setSelectedId] = useState(null)
 
   return (
     <div className='canvas-container w-100'>
@@ -122,16 +195,32 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
             {paths}
             {/* <Image {...template.watermark} x={(template.canvasSize.width - 300) / 2} y={(template.canvasSize.height - 300) / 2} opacity={0.2} image={image.watermark} /> */}
             <Image {...template.watermark} x={template.canvasSize.width - 50} y={template.canvasSize.height - 50} opacity={0.2} image={image.watermark} />
-            <Image {...template.image} image={image.image} draggable  onDragEnd={(e)=>handleElementDrag(e,'image',template.image)} />
+            {/* <ImageGenerator /> */}
+
+            {/* <Image {...template.image} image={image.image} draggable onDragEnd={(e) => handleElementDrag(e, 'image')} /> */}
+            <ImageGenerator
+              shapeProps={{ ...template.image }}
+              isSelected={'image' === selectedId}
+              onSelect={() => setSelectedId('image')}
+              changeAction={handleElementDrag}
+              transformAction={handleTransform}
+              image={image.image}
+              name="image"
+              draggable={true}
+            />
+
             {/* <Path {...template.pattern} /> */}
-            <Image {...template.logo} image={image.logo} draggable onDragEnd={(e)=>handleElementDrag(e,'logo',template.logo)} />
+            <Image {...template.logo} image={image.logo} draggable onDragEnd={(e) => handleElementDrag(e, 'logo')} />
+            {/* <ImageGenerator /> */}
 
 
-            <Text {...template.mainContent} draggable onDragEnd={(e)=>handleElementDrag(e,'mainContent',template.mainContent)} text={mainContent?.text} fontSize={mainContent?.fontSize || template.mainContent.fontSize} fill={mainContent?.color || template.mainContent.fill} />
+            <Text {...template.mainContent} draggable onDragEnd={(e) => handleElementDrag(e, 'mainContent')} text={mainContent?.text} fontSize={mainContent?.fontSize || template.mainContent.fontSize} fill={mainContent?.color || template.mainContent.fill} />
+
+
             <Text {...template.subContent} text={subContent?.text} fontSize={subContent?.fontSize || template.subContent.fontSize} fill={subContent?.color || template.subContent.fill} />
-            <Group draggable={true}>
-              <Rect {...template.btnBox} />
-              <Text {...template.btnText} text={btnText?.text} fontSize={btnText?.fontSize || template.btnText.fontSize} fill={btnText?.color || template.btnText.fill} />
+            <Group draggable={true} onDragEnd={(e) => handleGroupDrag(e, ['btnBox', 'btnText'])}>
+              <Rect name='btnBox' {...template.btnBox} />
+              <Text name='btnText' {...template.btnText} text={btnText?.text} fontSize={btnText?.fontSize || template.btnText.fontSize} fill={btnText?.color || template.btnText.fill} />
             </Group>
 
           </Layer>
@@ -142,3 +231,67 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
 }
 
 export default Canvas;
+
+
+const ImageGenerator = ({ shapeProps, isSelected, onSelect, changeAction,transformAction, draggable, image, name }) => {
+  const shapeRef = useRef(null);
+  const trRef = useRef(null);
+  console.log(shapeProps)
+
+  useEffect(() => {
+    if (trRef.current) {
+      trRef.current.nodes([shapeRef.current]);
+      trRef.current.getLayer().batchDraw();
+    }
+  }, [isSelected])
+
+  return (
+    <>
+      <Image
+        onClick={onSelect}
+        onTap={onSelect}
+        ref={shapeRef}
+        {...shapeProps}
+        draggable={draggable}
+        onDragEnd={(e) => changeAction(e, name)}
+        image={image}
+
+        onTransformEnd={(e) => {
+          // transformer is changing scale of the node
+          // and NOT its width or height
+          // but in the store we have only width and height
+          // to match the data better we will reset scale on transform end
+          const node = shapeRef.current;
+          const scaleX = node.scaleX();
+          const scaleY = node.scaleY();
+
+          // we will reset it back
+          node.scaleX(1);
+          node.scaleY(1);
+          transformAction({
+            ...shapeProps,
+            name:name,
+            x: node.x(),
+            y: node.y(),
+            // set minimal value
+            width: Math.max(5, node.width() * scaleX),
+            height: Math.max(node.height() * scaleY),
+          });
+        }}
+      />
+      {isSelected && (
+        <Transformer
+          ref={trRef}
+          boundBoxFunc={(oldBox, newBox) => {
+            // limit resize
+            if (newBox.width < 5 || newBox.height < 5) {
+              return oldBox;
+            }
+            return newBox;
+          }}
+        />
+      )}
+
+    </>
+  )
+}
