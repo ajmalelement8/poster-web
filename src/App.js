@@ -159,6 +159,9 @@ function App() {
     setTemplates(templateList)
     dispatch({type:'set-templates',payload:templateList})
   }, [])
+  useEffect(()=>{
+console.log(templates)
+  },[templates])
   // Function to trigger download
   const handleExport = (elementref, name) => {
     const uri = elementref.current.toDataURL();

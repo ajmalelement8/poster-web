@@ -15,36 +15,12 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
     })
 
 
-    // const canvasSize = {
-    //     height: 800,
-    //     width: 800,
-    // };
     useEffect(() => {
         if (template.canvasSize) {
-            // const ratio = Math.min(canvasSize.width / template.canvasSize.width, canvasSize.height / template.canvasSize.height);
-            // setRatio(ratio)
+
             setCanvasSize(template.canvasSize)
         }
     }, [template.canvasSize])
-
-    // const getX = (x) => {
-    //     let newX = x + ((canvasSize.width + template.canvasSize.width * ratio) / 2);
-    //     return newX;
-    // };
-
-    // const getY = (y) => {
-    //     let newY = y + ((canvasSize.height + template.canvasSize.height * ratio) / 2);
-    //     return newY;
-    // };
-    // const getWidth = (width) => {
-    //     let newWidth = width * ratio;
-    //     return newWidth;
-    // };
-
-    // const getHeight = (height) => {
-    //     let newHeight = height * ratio;
-    //     return newHeight;
-    // };
 
 
     useEffect(() => {
@@ -59,51 +35,6 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
         loadImage(images.image.croppedUrl, setImage, 'image');
     }, [images.image.croppedUrl]);
 
-    // useEffect(() => {
-    //     if (preview && canvasRef?.current) {
-    //         let parentElem = canvasRef.current.content.parentElement;
-    //         let canvasContainer = canvasRef.current.content;
-    //         let canvas = canvasRef.current.content.querySelector('canvas')
-    //         // const ctx = canvas.getContext('2d');
-    //         let aspectRatioHeight = canvasSize.height / canvasSize.width;
-    //         let aspectRatioWidth = canvasSize.width / canvasSize.height;
-
-    //         let newWidth;
-    //         let newHeight;
-    //         if (canvasSize.height < parentElem.clientHeight) {
-    //             if (canvasSize.height > canvasSize.width) {
-
-    //                 newHeight = parentElem.clientHeight;
-    //                 newWidth = newHeight * aspectRatioWidth;
-    //             }
-    //             else {
-
-    //                 newWidth = parentElem.clientWidth;
-    //                 newHeight = newWidth * aspectRatioHeight;
-    //             }
-    //         }
-    //         else {
-    //             if (canvasSize.height > canvasSize.width) {
-
-
-    //                 newHeight = parentElem.clientHeight;
-    //                 newWidth = newHeight * aspectRatioWidth;
-    //             }
-    //             else {
-    //                 newWidth = parentElem.clientWidth;
-    //                 newHeight = newWidth * aspectRatioHeight;
-    //             }
-    //         }
-
-
-
-    //         canvas.style.width = newWidth + "px";
-    //         canvas.style.height = newHeight + "px";
-
-    //         canvasContainer.classList.add("canvas-parent")
-
-    //     }
-    // }, [template.canvasSize, window.resize]);
 
     function loadImage(src, setFunction, type) {
         const image = new window.Image();
@@ -131,7 +62,6 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
             return updatedTemplates;
         }
         )
-        // setTemplates(['asd0','asdasd','asdasd'])
     }
     const handleGroupDrag = (event, elements) => {
         setTemplates((prevState) => {
@@ -152,8 +82,8 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                     // x: elem.x(),
                     // y: elem.y()
                 };
-                console.log("x", template[element].x, event.target.x(), template[element].x + event.target.x());
-                console.log("y", template[element].y, event.target.y(), template[element].y + event.target.y());
+                // console.log("x", template[element].x, event.target.x(), template[element].x + event.target.x());
+                // console.log("y", template[element].y, event.target.y(), template[element].y + event.target.y());
             })
 
             activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
@@ -163,7 +93,8 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
         });
     };
 
-    const handleTransform = (name, x, y, width, height) => {
+    const handleTransform = ({ name, x, y, scaleX, scaleY,height,width, rotation }) => {
+        // console.log(template[name])
 
         setTemplates((prevState) => {
             const updatedTemplates = [...prevState];     //all templates
@@ -173,16 +104,23 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
             //template - current template with the size
             const updatedTemplateItem = {
                 ...template,
-                [name]: { ...template[name], x: x, y: y, width: width, height: height },
+                [name]: {
+                    ...template[name],
+                    x: x,
+                    y: y,
+                    // width: width, // Adjust width based on scaleX
+                    // height: height,// Adjust height based on scaleY
+                    // scaleY:scaleY,
+                    // scaleX:scaleX,
+                    rotation: rotation, // Set the rotation
+                },
             };
-
             activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
-            // console.log(activeItemIndex,template.name,updatedTemplates)
+            console.log(name, x, y, scaleX, scaleY,height,width, rotation)
 
             return updatedTemplates;
         }
         )
-        // setTemplates(['asd0','asdasd','asdasd'])
     }
 
     // selectable images
@@ -201,8 +139,8 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                         <Rect  {...template.background} {...canvasSize} fill={images.background || template.background.fill} />
                         {rectangles}
 
-                        <Image {...template.image} image={image.image} draggable onDragEnd={(e) => handleElementDrag(e, 'image')} />
-                        {/* <ImageGenerator
+                        {/* <Image {...template.image} image={image.image} draggable onDragEnd={(e) => handleElementDrag(e, 'image')} /> */}
+                        <ImageGenerator
                             shapeProps={{ ...template.image }}
                             isSelected={'image' === selectedId}
                             onSelect={() => setSelectedId('image')}
@@ -211,7 +149,7 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                             image={image.image}
                             name="image"
                             draggable={true}
-                        /> */}
+                        />
 
                         {/* <Path {...template.pattern} /> */}
                         <Image {...template.logo} image={image.logo} draggable onDragEnd={(e) => handleElementDrag(e, 'logo')} />
@@ -242,9 +180,10 @@ export default PreviewCanvas;
 
 
 const ImageGenerator = ({ shapeProps, isSelected, onSelect, changeAction, transformAction, draggable, image, name }) => {
+    console.log(name)
     const shapeRef = useRef(null);
     const trRef = useRef(null);
-    console.log(shapeProps)
+    // console.log(shapeProps)
 
     useEffect(() => {
         if (trRef.current) {
@@ -269,21 +208,38 @@ const ImageGenerator = ({ shapeProps, isSelected, onSelect, changeAction, transf
                     // and NOT its width or height
                     // but in the store we have only width and height
                     // to match the data better we will reset scale on transform end
+                    // const node = shapeRef.current;
+                    // const scaleX = node.scaleX();
+                    // const scaleY = node.scaleY();
+
+                    // // we will reset it back
+                    // node.scaleX(1);
+                    // node.scaleY(1);
+                    // transformAction({
+                    //     ...shapeProps,
+                    //     name: name,
+                    //     x: node.x(),
+                    //     y: node.y(),
+                    //     // set minimal value
+                    //     width: Math.max(5, node.width() * scaleX),
+                    //     height: Math.max(node.height() * scaleY),
                     const node = shapeRef.current;
                     const scaleX = node.scaleX();
                     const scaleY = node.scaleY();
+                    const rotation = node.rotation(); // Get the rotation value
 
-                    // we will reset it back
-                    node.scaleX(1);
-                    node.scaleY(1);
+                    // Reset scaleX and scaleY
+                    // node.scaleX(1);
+                    // node.scaleY(1);
+
                     transformAction({
                         ...shapeProps,
                         name: name,
                         x: node.x(),
                         y: node.y(),
-                        // set minimal value
                         width: Math.max(5, node.width() * scaleX),
                         height: Math.max(node.height() * scaleY),
+                        rotation: rotation, // Pass the rotation value
                     });
                 }}
             />
