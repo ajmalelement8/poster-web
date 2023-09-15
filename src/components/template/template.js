@@ -11,17 +11,22 @@ export const templateList = [
 ]
 
 
-const TemplatePicker = ({ templates, dispatch }) => {
-    const [activeTemplate, setActiveTemplate] = useState(0)
-    useEffect(() => {
-        dispatch({ type: 'template', payload: { templateIndex: activeTemplate } })
-    }, [activeTemplate])
+const TemplatePicker = ({ templates, dispatch,activeTemplate }) => {
+    // const [activeTemplate, setActiveTemplate] = useState(0)
+    // useEffect(() => {
+    //     dispatch({ type: 'template', payload: { templateIndex: activeTemplate } })
+    // }, [activeTemplate])
+
+    const handleTemplateChange = (index)=>{
+        dispatch({type:'template', payload:{templateIndex:index}})
+    }
 
     return (
         <div className="template-container">
+            <div className="">Templates</div>
             <div className="template-list">
                 {templates.map((template, index) => (
-                    <TemplateItem index={index} key={index} action={setActiveTemplate} style={activeTemplate == index ? 'active' : ''} template={template} />
+                    <TemplateItem index={index} key={index} action={()=>handleTemplateChange(index)} style={activeTemplate == index ? 'active' : ''} template={template} />
                 ))}
             </div>
         </div>

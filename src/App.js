@@ -11,6 +11,7 @@ import GeneratedList from './components/generated-list/GeneratedList';
 import TemplatePicker, { templateList } from './components/template/template';
 import Tab, { TabContent } from './components/tab/Tab';
 import SizePicker from './components/sizePicker/SizePicker';
+import PreviewCanvas from './components/preview-canvas/PreviewCanvas';
 
 const initialState = {
   btnText: { text: 'button', color: '#ffffff', fontSize: 34 },
@@ -206,11 +207,11 @@ function App() {
               <TabContent label="Text">
                 <Form action={handleGenerate} state={canvasData} dispatch={dispatch} />
               </TabContent>
-              {/* <TabContent label="Size">
-                {templates && <SizePicker template={templates[canvasData.activeTemplate.templateIndex]} action={handleGenerate} state={canvasData} dispatch={dispatch} />}
-              </TabContent> */}
+              <TabContent label="Size">
+                {templates && <SizePicker template={templates[canvasData.activeTemplate.templateIndex]} action={handleGenerate} state={canvasData} activeSize={canvasData.activeTemplate.sizeIndex} dispatch={dispatch} />}
+              </TabContent>
               <TabContent label="Template">
-                <TemplatePicker templates={templates} action={handleGenerate} state={canvasData} dispatch={dispatch} />
+                <TemplatePicker templates={templates} action={handleGenerate} activeTemplate={canvasData.activeTemplate.templateIndex} state={canvasData} dispatch={dispatch} />
               </TabContent>
 
             </Tab>
@@ -218,7 +219,7 @@ function App() {
           </div>
           <div className="main-preview">
             <div className="main-canvas">
-              <Tab dir="horizontal">
+              {/* <Tab dir="horizontal">
                 <TabContent label="Pin Size">
                   <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][0]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
                 </TabContent>
@@ -235,8 +236,8 @@ function App() {
                   <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][4]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
                 </TabContent>
 
-              </Tab>
-              {/* <Canvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} /> */}
+              </Tab> */}
+              <PreviewCanvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
             </div>
             {/* <div className="main-img">
               <img data-index={canvasData.activeTemplate.templateIndex} src={canavsSrc} alt="" />

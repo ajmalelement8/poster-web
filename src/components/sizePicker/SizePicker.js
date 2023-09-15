@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import './SizePicker.scss'
 
-const SizePicker = ({ template, dispatch }) => {
+const SizePicker = ({ template, dispatch,activeSize }) => {
     
-    const [activeSize, setActiveSize] = useState(0)
-    useEffect(() => {
-        dispatch({ type: 'template', payload: {sizeIndex:activeSize } })
-    }, [activeSize])
+    // const [activeSize, setActiveSize] = useState(0)
+    // useEffect(() => {
+    //     dispatch({ type: 'template', payload: {sizeIndex:activeSize } })
+    // }, [activeSize])
+
+    const handleSizeChange = (index)=>{
+        dispatch({ type: 'template', payload: {sizeIndex:index } })
+    }
     return (
         <div className='size-container'>
             <div className="">
@@ -14,7 +18,7 @@ const SizePicker = ({ template, dispatch }) => {
             </div>
 
             <div className="size-list">
-                {template&&template.map((size, index) => <SizeItem index={index} action={setActiveSize} style={activeSize == index ? 'active' : ''} key={index} template={size} />)}
+                {template&&template.map((size, index) => <SizeItem index={index} action={()=>handleSizeChange(index)} style={activeSize == index ? 'active' : ''} key={index} template={size} />)}
             </div>
         </div>
     )
