@@ -43,7 +43,7 @@ const template1 = [
             x: 0,
             y: 460,
             width: 500,
-            // height:400,
+            height:400,
             scaleX: 1,
             scaleY: 1,
             cornerRadius: [0, 180, 0, 0],
@@ -73,12 +73,12 @@ const template1 = [
             fontStyle: 'bold',
         },
         btnBox: {
-            x: 0,
+            x: -20,
             y: 220,
-            width: 200,
+            width: 220,
             height: 50,
             fill: '#b02439',
-            cornerRadius: [0, 20, 20, 0],
+            cornerRadius: [20, 20, 20, 20],
         },
         btnText: {
             x: 30,
@@ -132,8 +132,10 @@ const template1 = [
         image: {
             x: 0,
             y: 380,
-            scaleX: 1.5,
-            scaleY: 1.5,
+            // scaleX: 1.5,
+            // scaleY: 1.5,
+            width:750,
+            height:500,
             cornerRadius: [0, 180, 0, 0],
         },
         logo: {
@@ -161,12 +163,12 @@ const template1 = [
             fontStyle: 'bold',
         },
         btnBox: {
-            x: 0,
+            x: -20,
             y: 220,
-            width: 200,
+            width: 220,
             height: 50,
             fill: '#b02439',
-            cornerRadius: [0, 20, 20, 0],
+            cornerRadius: [20, 20, 20, 20],
         },
         btnText: {
             x: 30,
@@ -216,10 +218,12 @@ const template1 = [
             height: 100,
         },
         image: {
-            x: -140,
+            x: 0,
             y: 380,
-            scaleX: 1,
-            scaleY: 1,
+                // scaleX: 1,
+                // scaleY: 1,
+                width:360,
+                height:280,
             cornerRadius: [0, 180, 0, 0],
         },
         logo: {
@@ -247,12 +251,12 @@ const template1 = [
             fontStyle: 'bold',
         },
         btnBox: {
-            x: 0,
+            x: -20,
             y: 260,
-            width: 200,
+            width: 220,
             height: 50,
             fill: '#b02439',
-            cornerRadius: [0, 20, 20, 0],
+            cornerRadius: [20, 20, 20, 20],
         },
 
         btnText: {
@@ -305,8 +309,10 @@ const template1 = [
         image: {
             x: 0,
             y: 380,
-            scaleX: 1.1,
-            scaleY: 1.1,
+            // scaleX: 1.1,
+            // scaleY: 1.1,
+            width:540,
+            height:300,
             cornerRadius: [0, 180, 0, 0],
         },
         logo: {
@@ -334,12 +340,12 @@ const template1 = [
             fontStyle: 'bold',
         },
         btnBox: {
-            x: 0,
+            x: -20,
             y: 230,
-            width: 200,
+            width: 220,
             height: 50,
             fill: '#b02439',
-            cornerRadius: [0, 20, 20, 0],
+            cornerRadius: [20, 20, 20, 20],
         },
         btnText: {
             x: 30,
@@ -390,8 +396,10 @@ const template1 = [
         image: {
             x: 0,
             y: 230,
-            scaleX: 1,
-            scaleY: 1,
+            // scaleX: 1,
+            // scaleY: 1,
+            width:800,
+            height:500,
             cornerRadius: [0, 180, 0, 0],
         },
         logo: {
@@ -420,12 +428,12 @@ const template1 = [
             fontStyle: 'bold',
         },
         btnBox: {
-            x: 0,
+            x: -20,
             y: 130,
-            width: 300,
+            width: 320,
             height: 50,
             fill: '#b02439',
-            cornerRadius: [0, 20, 20, 0],
+            cornerRadius: [20, 20, 20, 20],
         },
         btnText: {
             x: 30,

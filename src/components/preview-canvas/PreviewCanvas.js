@@ -27,24 +27,24 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
         }
     }, [template.canvasSize])
 
-    const getX = (x) => {
-        let newX = x + ((canvasSize.width + template.canvasSize.width * ratio) / 2);
-        return newX;
-    };
+    // const getX = (x) => {
+    //     let newX = x + ((canvasSize.width + template.canvasSize.width * ratio) / 2);
+    //     return newX;
+    // };
 
-    const getY = (y) => {
-        let newY = y + ((canvasSize.height + template.canvasSize.height * ratio) / 2);
-        return newY;
-    };
-    const getWidth = (width) => {
-        let newWidth = width * ratio;
-        return newWidth;
-    };
+    // const getY = (y) => {
+    //     let newY = y + ((canvasSize.height + template.canvasSize.height * ratio) / 2);
+    //     return newY;
+    // };
+    // const getWidth = (width) => {
+    //     let newWidth = width * ratio;
+    //     return newWidth;
+    // };
 
-    const getHeight = (height) => {
-        let newHeight = height * ratio;
-        return newHeight;
-    };
+    // const getHeight = (height) => {
+    //     let newHeight = height * ratio;
+    //     return newHeight;
+    // };
 
 
     useEffect(() => {
@@ -200,10 +200,6 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                     <Layer>
                         <Rect  {...template.background} {...canvasSize} fill={images.background || template.background.fill} />
                         {rectangles}
-                        {paths}
-                        {/* <Image {...template.watermark} x={(template.canvasSize.width - 300) / 2} y={(template.canvasSize.height - 300) / 2} opacity={0.2} image={image.watermark} /> */}
-                        <Image {...template.watermark} x={canvasSize.width - 50} y={canvasSize.height - 50} opacity={0.2} image={image.watermark} />
-                        {/* <ImageGenerator /> */}
 
                         <Image {...template.image} image={image.image} draggable onDragEnd={(e) => handleElementDrag(e, 'image')} />
                         {/* <ImageGenerator
@@ -221,15 +217,19 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                         <Image {...template.logo} image={image.logo} draggable onDragEnd={(e) => handleElementDrag(e, 'logo')} />
                         {/* <ImageGenerator /> */}
 
+                        {/* <Image {...template.watermark} x={(template.canvasSize.width - 300) / 2} y={(template.canvasSize.height - 300) / 2} opacity={0.2} image={image.watermark} /> */}
+                        <Image {...template.watermark} x={canvasSize.width - 50} y={canvasSize.height - 50} opacity={0.2} image={image.watermark} />
+                        {/* <ImageGenerator /> */}
+                        {paths}
 
                         <Text {...template.mainContent} draggable onDragEnd={(e) => handleElementDrag(e, 'mainContent')} text={mainContent?.text} fontSize={mainContent?.fontSize || template.mainContent.fontSize} fill={mainContent?.color || template.mainContent.fill} />
 
 
-                        <Text {...template.subContent} text={subContent?.text} fontSize={subContent?.fontSize || template.subContent.fontSize} fill={subContent?.color || template.subContent.fill} />
-                        <Group draggable={true} onDragEnd={(e) => handleGroupDrag(e, ['btnBox', 'btnText'])}>
-                            <Rect name='btnBox' {...template.btnBox} />
-                            <Text name='btnText' {...template.btnText} text={btnText?.text} fontSize={btnText?.fontSize || template.btnText.fontSize} fill={btnText?.color || template.btnText.fill} />
-                        </Group>
+                        <Text {...template.subContent} draggable onDragEnd={(e) => handleElementDrag(e, 'subContent')} text={subContent?.text} fontSize={subContent?.fontSize || template.subContent.fontSize} fill={subContent?.color || template.subContent.fill} />
+                        {/* <Group draggable={true} onDragEnd={(e) => handleGroupDrag(e, ['btnBox', 'btnText'])}> */}
+                        <Rect draggable={true} onDragEnd={(e) => handleElementDrag(e, 'btnBox')}   {...template.btnBox} />
+                        <Text draggable={true} onDragEnd={(e) => handleElementDrag(e, 'btnText')} {...template.btnText} text={btnText?.text} fontSize={btnText?.fontSize || template.btnText.fontSize} fill={btnText?.color || template.btnText.fill} />
+                        {/* </Group> */}
 
                     </Layer>
                 </Stage>

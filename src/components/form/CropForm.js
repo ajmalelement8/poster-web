@@ -9,6 +9,7 @@ const CropForm = (props) => {
     const [crop, setCrop] = useState({});
     const [croppedImageUrl, setCroppedImageUrl] = useState(null);
     const imageRef = useRef();
+    console.log(props)
 
     useEffect(() => {
         onSelectFile()

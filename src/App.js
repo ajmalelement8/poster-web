@@ -26,7 +26,8 @@ const initialState = {
         y: 0,
         width: 50,
         height: 50,
-      }, croppedUrl: ''
+      }, croppedUrl: '',
+      ratio:1/1
     }, watermark: {
       url: '',
       crop: {
@@ -35,7 +36,9 @@ const initialState = {
         y: 0,
         width: 50,
         height: 50
-      }, croppedUrl: ''
+      }, croppedUrl: '',      
+      ratio:0
+
     }, image: {
       url: '',
       crop: {
@@ -44,15 +47,17 @@ const initialState = {
         y: 0,
         width: 50,
         height: 50
-      }, croppedUrl: ''
+      }, croppedUrl: '',
+      ratio:0
     }, background: ""
   },
   modal: {
     crop: { isActive: false },
     template: { isActive: false },
   },
-  activeForm: { type: '', src: '', crop: {}, ratio: null },
-  activeTemplate: { templateIndex: 0, sizeIndex: 0 }
+  activeForm: { type: '', src: '', crop: {}, ratio:null },
+  activeTemplate: { templateIndex: 0, sizeIndex: 0 },
+  templates:[]
 }
 
 const reducer = (state, action) => {
@@ -80,7 +85,7 @@ const reducer = (state, action) => {
       const { element, imageUrl } = action.payload;
       if (imageUrl) {
         return {
-          ...state, images: { ...state.images, [element]: { ...state.images[element], url: imageUrl } }, activeForm: { type: element, crop: state.images[element].crop, src: imageUrl, ratio: null }, modal: { ...state.modal, crop: { isActive: true } }
+          ...state, images: { ...state.images, [element]: { ...state.images[element], url: imageUrl } }, activeForm: { type: element, crop: state.images[element].crop, src: imageUrl, ratio: state.templates[state.activeTemplate.templateIndex][state.activeTemplate.sizeIndex][element].width/ state.templates[state.activeTemplate.templateIndex][state.activeTemplate.sizeIndex][element].height}, modal: { ...state.modal, crop: { isActive: true } }
         }
       }
       return {
@@ -90,7 +95,7 @@ const reducer = (state, action) => {
     case 'active-form':
       if (action.payload && state.images[action.payload].url) {
         return {
-          ...state, activeForm: { ...state.activeForm, type: action.payload, crop: state.images[action.payload].crop, src: state.images[action.payload].url }, modal: { ...state.modal, crop: { isActive: true } }
+          ...state, activeForm: { ...state.activeForm, type: action.payload, crop: state.images[action.payload].crop, src: state.images[action.payload].url,ratio:1/1 }, modal: { ...state.modal, crop: { isActive: true } }
         }
       }
       return state;
@@ -132,6 +137,11 @@ const reducer = (state, action) => {
         ...state, activeTemplate: { ...state.activeTemplate, ...action.payload }
       }
 
+    case 'set-templates':
+      return {
+       ...state, templates: action.payload
+      }
+
     case 'clear':
       return initialState
 
@@ -147,6 +157,7 @@ function App() {
   const canvasRef = useRef(null);
   useEffect(() => {
     setTemplates(templateList)
+    dispatch({type:'set-templates',payload:templateList})
   }, [])
   // Function to trigger download
   const handleExport = (elementref, name) => {
