@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Canvas from '../canvas/Canvas'
 import './GeneratedList.scss'
-const GeneratedList = ({ templateList, mainContent, subContent, btnText, images,action }) => {
+const GeneratedList = ({ templateList, mainContent, subContent, btnText, images, action }) => {
     const dataList = templateList?.map((template, index) => <CanvasItem key={index} action={action} mainContent={mainContent} subContent={subContent} btnText={btnText} images={images} template={template} />)
     return (
         <div className="generate-list-container">
@@ -14,22 +14,32 @@ export default GeneratedList
 
 
 const CanvasItem = (props) => {
-    const { mainContent, subContent, btnText, images, template,action } = props;
+    const { mainContent, subContent, btnText, images, template, action } = props;
     const canvasRef = useRef(null)
     const [src, setSrc] = useState('')
     useEffect(() => {
         if (canvasRef.current) {
-            convertCanvasToImage()
+            // convertCanvasToImage();
+            setTimeout(convertCanvasToImage,100)
         }
     }, [canvasRef])
 
-    const convertCanvasToImage = () => {
-        const canvas = canvasRef.current;
-        const dataURL = canvas.toDataURL(); 
+    const convertCanvasToImage = async() => {
+        const canvas = await canvasRef.current.content.querySelector('canvas');
+        const dataURL = await canvas.toDataURL('image/jpeg'); 
 
         const img = new Image();
-        img.src = dataURL;
+        img.src = await dataURL;
+        console.log("works")
         setSrc(img.src)
+        // canvas.toDataURL('image/png', (dataURL) => {
+        //     console.log("works")
+        //     const img = new Image();
+        //     img.src = dataURL;
+        //     img.onload = () => {
+        //         setSrc(img.src);
+        //     };
+        // });
 
     };
     return (
@@ -44,7 +54,7 @@ const CanvasItem = (props) => {
                 <img src={src} alt="" />
             </div>
             <div className="data-handler">
-                <button onClick={()=>action(canvasRef,template.name)}>Download</button>
+                <button onClick={() => action(canvasRef, template.name)}>Download</button>
             </div>
         </div>
     )

@@ -41,25 +41,15 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
       let newWidth;
       let newHeight;
       if (canvasSize.height < parentElem.clientHeight) {
-        // console.log("ch<ph")
-        // console.log("height ", canvasSize.height, parentElem.clientHeight);
-        // console.log("width ", canvasSize.width, parentElem.clientWidth);
-
         // newWidth = parentElem.clientWidth;
         // newHeight = newWidth * aspectRatioHeight;
         if (canvasSize.height > canvasSize.width) {
-          // console.log("ch>cw")
-          // console.log("height ", canvasSize.height, parentElem.clientHeight);
-          // console.log("width ", canvasSize.width, parentElem.clientWidth);
 
           newHeight = parentElem.clientHeight;
           newWidth = newHeight * aspectRatioWidth;
         }
         else {
 
-          // console.log("ch<cw")
-          // console.log("height ", canvasSize.height, parentElem.clientHeight);
-          // console.log("width ", canvasSize.width, parentElem.clientWidth);
 
           newWidth = parentElem.clientWidth;
           newHeight = newWidth * aspectRatioHeight;
@@ -67,19 +57,11 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
       }
       else {
         if (canvasSize.height > canvasSize.width) {
-          // console.log("ch>cw")
-          // console.log("height ", canvasSize.height, parentElem.clientHeight);
-          // console.log("width ", canvasSize.width, parentElem.clientWidth);
 
           newHeight = parentElem.clientHeight;
           newWidth = newHeight * aspectRatioWidth;
         }
         else {
-
-          // console.log("ch<cw")
-          // console.log("height ", canvasSize.height, parentElem.clientHeight);
-          // console.log("width ", canvasSize.width, parentElem.clientWidth);
-
           newWidth = parentElem.clientWidth;
           newHeight = newWidth * aspectRatioHeight;
         }
@@ -122,7 +104,6 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
       };
 
       activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
-      // console.log(activeItemIndex,template.name,updatedTemplates)
 
       return updatedTemplates;
     }
@@ -140,7 +121,6 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
         let elem = event.target.findOne((node) => {
           return node.attrs.name === element;
         });
-        // console.log(elem.x())
         updatedTemplateItem[element] = {
           ...template[element],
           x: template[element].x + event.target.x(),
@@ -148,8 +128,6 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
           // x: elem.x(),
           // y: elem.y()
         };
-        console.log("x", template[element].x, event.target.x(), template[element].x + event.target.x());
-        console.log("y", template[element].y, event.target.y(), template[element].y + event.target.y());
       })
 
       activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
@@ -173,7 +151,6 @@ const Canvas = ({ btnText, mainContent, subContent, images, canvasRef, template,
       };
 
       activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
-      // console.log(activeItemIndex,template.name,updatedTemplates)
 
       return updatedTemplates;
     }
@@ -236,7 +213,6 @@ export default Canvas;
 const ImageGenerator = ({ shapeProps, isSelected, onSelect, changeAction,transformAction, draggable, image, name }) => {
   const shapeRef = useRef(null);
   const trRef = useRef(null);
-  console.log(shapeProps)
 
   useEffect(() => {
     if (trRef.current) {

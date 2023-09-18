@@ -251,8 +251,8 @@ console.log(templates)
                 </TabContent>
 
               </Tab> */}
-              <PreviewCanvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
-            </div>
+{              templates.length>0&&<PreviewCanvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
+}            </div>
             {/* <div className="main-img">
               <img data-index={canvasData.activeTemplate.templateIndex} src={canavsSrc} alt="" />
             </div> */}

@@ -57,7 +57,6 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
             };
 
             activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
-            // console.log(activeItemIndex,template.name,updatedTemplates)
 
             return updatedTemplates;
         }
@@ -74,7 +73,6 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                 let elem = event.target.findOne((node) => {
                     return node.attrs.name === element;
                 });
-                // console.log(elem.x())
                 updatedTemplateItem[element] = {
                     ...template[element],
                     x: template[element].x + event.target.x(),
@@ -82,8 +80,6 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                     // x: elem.x(),
                     // y: elem.y()
                 };
-                // console.log("x", template[element].x, event.target.x(), template[element].x + event.target.x());
-                // console.log("y", template[element].y, event.target.y(), template[element].y + event.target.y());
             })
 
             activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
@@ -94,7 +90,6 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
     };
 
     const handleTransform = ({ name, x, y, scaleX, scaleY,height,width, rotation }) => {
-        // console.log(template[name])
 
         setTemplates((prevState) => {
             const updatedTemplates = [...prevState];     //all templates
@@ -110,13 +105,13 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                     y: y,
                     // width: width, // Adjust width based on scaleX
                     // height: height,// Adjust height based on scaleY
-                    // scaleY:scaleY,
-                    // scaleX:scaleX,
+                    scaleY:scaleY,
+                    scaleX:scaleX,
                     rotation: rotation, // Set the rotation
                 },
             };
             activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
-            console.log(name, x, y, scaleX, scaleY,height,width, rotation)
+            // console.log(name, x, y, scaleX, scaleY,height,width, rotation)
 
             return updatedTemplates;
         }
@@ -152,7 +147,17 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                         />
 
                         {/* <Path {...template.pattern} /> */}
-                        <Image {...template.logo} image={image.logo} draggable onDragEnd={(e) => handleElementDrag(e, 'logo')} />
+                        {/* <Image {...template.logo} image={image.logo} draggable onDragEnd={(e) => handleElementDrag(e, 'logo')} /> */}
+                        <ImageGenerator
+                            shapeProps={{ ...template.logo }}
+                            isSelected={'logo' === selectedId}
+                            onSelect={() => setSelectedId('logo')}
+                            changeAction={handleElementDrag}
+                            transformAction={handleTransform}
+                            image={image.logo}
+                            name="logo"
+                            draggable={true}
+                        />
                         {/* <ImageGenerator /> */}
 
                         {/* <Image {...template.watermark} x={(template.canvasSize.width - 300) / 2} y={(template.canvasSize.height - 300) / 2} opacity={0.2} image={image.watermark} /> */}
@@ -180,10 +185,8 @@ export default PreviewCanvas;
 
 
 const ImageGenerator = ({ shapeProps, isSelected, onSelect, changeAction, transformAction, draggable, image, name }) => {
-    console.log(name)
     const shapeRef = useRef(null);
     const trRef = useRef(null);
-    // console.log(shapeProps)
 
     useEffect(() => {
         if (trRef.current) {
@@ -204,41 +207,21 @@ const ImageGenerator = ({ shapeProps, isSelected, onSelect, changeAction, transf
                 image={image}
 
                 onTransformEnd={(e) => {
-                    // transformer is changing scale of the node
-                    // and NOT its width or height
-                    // but in the store we have only width and height
-                    // to match the data better we will reset scale on transform end
-                    // const node = shapeRef.current;
-                    // const scaleX = node.scaleX();
-                    // const scaleY = node.scaleY();
-
-                    // // we will reset it back
-                    // node.scaleX(1);
-                    // node.scaleY(1);
-                    // transformAction({
-                    //     ...shapeProps,
-                    //     name: name,
-                    //     x: node.x(),
-                    //     y: node.y(),
-                    //     // set minimal value
-                    //     width: Math.max(5, node.width() * scaleX),
-                    //     height: Math.max(node.height() * scaleY),
+                   
                     const node = shapeRef.current;
                     const scaleX = node.scaleX();
-                    const scaleY = node.scaleY();
+                    const scaleY = node.scaleY();   
                     const rotation = node.rotation(); // Get the rotation value
-
-                    // Reset scaleX and scaleY
-                    // node.scaleX(1);
-                    // node.scaleY(1);
 
                     transformAction({
                         ...shapeProps,
                         name: name,
                         x: node.x(),
                         y: node.y(),
-                        width: Math.max(5, node.width() * scaleX),
-                        height: Math.max(node.height() * scaleY),
+                        scaleX:scaleX,
+                        scaleY:scaleY,
+                        // width: Math.max(5, node.width() * scaleX),
+                        // height: Math.max(node.height() * scaleY),
                         rotation: rotation, // Pass the rotation value
                     });
                 }}
