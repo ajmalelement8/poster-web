@@ -71,7 +71,6 @@ const reducer = (state, action) => {
         ...state, [action.payload.field]: { ...state[action.payload.field], color: action.payload.value }
       }
     case 'font':
-      console.log(action.payload.field)
 
       return {
         ...state, [action.payload.field]: { ...state[action.payload.field], fontSize: Number(action.payload.value) }
@@ -159,9 +158,7 @@ function App() {
     setTemplates(templateList)
     dispatch({type:'set-templates',payload:templateList})
   }, [])
-  useEffect(()=>{
-console.log(templates)
-  },[templates])
+  
   // Function to trigger download
   const handleExport = (elementref, name) => {
     const uri = elementref.current.toDataURL();
@@ -202,12 +199,7 @@ console.log(templates)
 
 
   };
-  // console.log(templates)
-
-  useEffect(()=>{
-    // console.log(templates)
-  },[templates]
-  )
+  
   return (
     <div className="App">
       <div className=''>

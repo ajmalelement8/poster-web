@@ -111,7 +111,7 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                 },
             };
             activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
-            // console.log(name, x, y, scaleX, scaleY,height,width, rotation)
+            
 
             return updatedTemplates;
         }

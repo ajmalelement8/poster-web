@@ -30,16 +30,7 @@ const CanvasItem = (props) => {
 
         const img = new Image();
         img.src = await dataURL;
-        console.log("works")
-        setSrc(img.src)
-        // canvas.toDataURL('image/png', (dataURL) => {
-        //     console.log("works")
-        //     const img = new Image();
-        //     img.src = dataURL;
-        //     img.onload = () => {
-        //         setSrc(img.src);
-        //     };
-        // });
+        setSrc(img.src);
 
     };
     return (
