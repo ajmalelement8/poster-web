@@ -25,14 +25,17 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
 
     useEffect(() => {
         loadImage(images.logo.croppedUrl, setImage, 'logo');
+        console.log("changed logo")
     }, [images.logo.croppedUrl]);
 
     useEffect(() => {
         loadImage(images.watermark.croppedUrl, setImage, 'watermark');
+        console.log("changed watermark")
     }, [images.watermark.croppedUrl]);
 
     useEffect(() => {
         loadImage(images.image.croppedUrl, setImage, 'image');
+        console.log("changed image")
     }, [images.image.croppedUrl]);
 
 
@@ -89,7 +92,7 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
         });
     };
 
-    const handleTransform = ({ name, x, y, scaleX, scaleY,height,width, rotation }) => {
+    const handleTransform = ({ name, x, y, scaleX, scaleY, height, width, rotation }) => {
 
         setTemplates((prevState) => {
             const updatedTemplates = [...prevState];     //all templates
@@ -105,13 +108,13 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                     y: y,
                     // width: width, // Adjust width based on scaleX
                     // height: height,// Adjust height based on scaleY
-                    scaleY:scaleY,
-                    scaleX:scaleX,
+                    scaleY: scaleY,
+                    scaleX: scaleX,
                     rotation: rotation, // Set the rotation
                 },
             };
             activeIndex[activeItemIndex] = updatedTemplateItem;      //updating item inside current template size
-            
+
 
             return updatedTemplates;
         }
@@ -125,7 +128,7 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
     // rectangles and paths
     const rectangles = template?.rectangles && template.rectangles.map((rect, index) => <Rect key={index} {...rect} />)
     const paths = template?.paths && template.paths.map((path, index) => <Path key={index}  {...path} />)
-
+    console.log(btnText)
     return (
         <div className='preview-canvas-container w-100'>
             <div id='preview-canvas' className="preview-canvas">
@@ -135,7 +138,7 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                         {rectangles}
 
                         {/* <Image {...template.image} image={image.image} draggable onDragEnd={(e) => handleElementDrag(e, 'image')} /> */}
-                        <ImageGenerator
+                        {images.image.croppedUrl && <ImageGenerator
                             shapeProps={{ ...template.image }}
                             isSelected={'image' === selectedId}
                             onSelect={() => setSelectedId('image')}
@@ -144,11 +147,11 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                             image={image.image}
                             name="image"
                             draggable={true}
-                        />
+                        />}
 
                         {/* <Path {...template.pattern} /> */}
                         {/* <Image {...template.logo} image={image.logo} draggable onDragEnd={(e) => handleElementDrag(e, 'logo')} /> */}
-                        <ImageGenerator
+                        {images.logo.croppedUrl && <ImageGenerator
                             shapeProps={{ ...template.logo }}
                             isSelected={'logo' === selectedId}
                             onSelect={() => setSelectedId('logo')}
@@ -157,12 +160,23 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
                             image={image.logo}
                             name="logo"
                             draggable={true}
-                        />
+                        />}
                         {/* <ImageGenerator /> */}
 
                         {/* <Image {...template.watermark} x={(template.canvasSize.width - 300) / 2} y={(template.canvasSize.height - 300) / 2} opacity={0.2} image={image.watermark} /> */}
-                        <Image {...template.watermark} x={canvasSize.width - 50} y={canvasSize.height - 50} opacity={0.2} image={image.watermark} />
-                        {/* <ImageGenerator /> */}
+                        {/* <Image {...template.watermark} x={canvasSize.width - 50} y={canvasSize.height - 50} opacity={0.2} image={image.watermark} /> */}
+                        {images.watermark.croppedUrl && <ImageGenerator
+                            shapeProps={{ ...template.watermark }}
+                            isSelected={'watermark' === selectedId}
+                            onSelect={() => setSelectedId('watermark')}
+                            changeAction={handleElementDrag}
+                            transformAction={handleTransform}
+                            image={image.watermark}
+                            name="watermark"
+                            opacity={0.4}
+                            x={canvasSize.width - 100}
+                            y={canvasSize.height - 100}
+                            draggable={true} />}
                         {paths}
 
                         <Text {...template.mainContent} draggable onDragEnd={(e) => handleElementDrag(e, 'mainContent')} text={mainContent?.text} fontSize={mainContent?.fontSize || template.mainContent.fontSize} fill={mainContent?.color || template.mainContent.fill} />
@@ -170,7 +184,7 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
 
                         <Text {...template.subContent} draggable onDragEnd={(e) => handleElementDrag(e, 'subContent')} text={subContent?.text} fontSize={subContent?.fontSize || template.subContent.fontSize} fill={subContent?.color || template.subContent.fill} />
                         {/* <Group draggable={true} onDragEnd={(e) => handleGroupDrag(e, ['btnBox', 'btnText'])}> */}
-                        <Rect draggable={true} onDragEnd={(e) => handleElementDrag(e, 'btnBox')}   {...template.btnBox} />
+                        {btnText.text && <Rect draggable={true} onDragEnd={(e) => handleElementDrag(e, 'btnBox')}   {...template.btnBox} />}
                         <Text draggable={true} onDragEnd={(e) => handleElementDrag(e, 'btnText')} {...template.btnText} text={btnText?.text} fontSize={btnText?.fontSize || template.btnText.fontSize} fill={btnText?.color || template.btnText.fill} />
                         {/* </Group> */}
 
@@ -184,7 +198,7 @@ const PreviewCanvas = ({ btnText, mainContent, subContent, images, canvasRef, te
 export default PreviewCanvas;
 
 
-const ImageGenerator = ({ shapeProps, isSelected, onSelect, changeAction, transformAction, draggable, image, name }) => {
+const ImageGenerator = ({ shapeProps,x,y, isSelected, onSelect, changeAction, transformAction, draggable, image, name, opacity }) => {
     const shapeRef = useRef(null);
     const trRef = useRef(null);
 
@@ -201,16 +215,19 @@ const ImageGenerator = ({ shapeProps, isSelected, onSelect, changeAction, transf
                 onClick={onSelect}
                 onTap={onSelect}
                 ref={shapeRef}
+                x={x}
+                y={y}
                 {...shapeProps}
                 draggable={draggable}
                 onDragEnd={(e) => changeAction(e, name)}
                 image={image}
+                opacity={opacity}
 
                 onTransformEnd={(e) => {
-                   
+
                     const node = shapeRef.current;
                     const scaleX = node.scaleX();
-                    const scaleY = node.scaleY();   
+                    const scaleY = node.scaleY();
                     const rotation = node.rotation(); // Get the rotation value
 
                     transformAction({
@@ -218,8 +235,8 @@ const ImageGenerator = ({ shapeProps, isSelected, onSelect, changeAction, transf
                         name: name,
                         x: node.x(),
                         y: node.y(),
-                        scaleX:scaleX,
-                        scaleY:scaleY,
+                        scaleX: scaleX,
+                        scaleY: scaleY,
                         // width: Math.max(5, node.width() * scaleX),
                         // height: Math.max(node.height() * scaleY),
                         rotation: rotation, // Pass the rotation value

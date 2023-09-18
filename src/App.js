@@ -27,7 +27,7 @@ const initialState = {
         width: 50,
         height: 50,
       }, croppedUrl: '',
-      ratio:1/1
+      ratio: 1 / 1
     }, watermark: {
       url: '',
       crop: {
@@ -36,8 +36,8 @@ const initialState = {
         y: 0,
         width: 50,
         height: 50
-      }, croppedUrl: '',      
-      ratio:0
+      }, croppedUrl: '',
+      ratio: 0
 
     }, image: {
       url: '',
@@ -48,16 +48,16 @@ const initialState = {
         width: 50,
         height: 50
       }, croppedUrl: '',
-      ratio:0
+      ratio: 0
     }, background: ""
   },
   modal: {
     crop: { isActive: false },
     template: { isActive: false },
   },
-  activeForm: { type: '', src: '', crop: {}, ratio:null },
+  activeForm: { type: '', src: '', crop: {}, ratio: null },
   activeTemplate: { templateIndex: 0, sizeIndex: 0 },
-  templates:[]
+  templates: []
 }
 
 const reducer = (state, action) => {
@@ -81,20 +81,26 @@ const reducer = (state, action) => {
       }
 
     case 'images':
-      const { element, imageUrl } = action.payload;
+      var { element, imageUrl } = action.payload;
       if (imageUrl) {
         return {
-          ...state, images: { ...state.images, [element]: { ...state.images[element], url: imageUrl } }, activeForm: { type: element, crop: state.images[element].crop, src: imageUrl, ratio: state.templates[state.activeTemplate.templateIndex][state.activeTemplate.sizeIndex][element].width/ state.templates[state.activeTemplate.templateIndex][state.activeTemplate.sizeIndex][element].height}, modal: { ...state.modal, crop: { isActive: true } }
+          ...state, images: { ...state.images, [element]: { ...state.images[element], url: imageUrl } }, activeForm: { type: element, crop: state.images[element].crop, src: imageUrl, ratio: state.templates[state.activeTemplate.templateIndex][state.activeTemplate.sizeIndex][element].width / state.templates[state.activeTemplate.templateIndex][state.activeTemplate.sizeIndex][element].height }, modal: { ...state.modal, crop: { isActive: true } }
         }
       }
       return {
         ...state, images: { ...state.images, [element]: { ...state.images[element], url: null, croppedUrl: null } }, modal: { ...state.modal, crop: { isActive: true } }
       };
 
+    case 'clear-image':
+      console.log(action.payload)
+      return {
+        ...state, images: { ...state.images, [action.payload.field]: { ...state.images[action.payload.field], ...action.payload.value } }
+      }
+
     case 'active-form':
       if (action.payload && state.images[action.payload].url) {
         return {
-          ...state, activeForm: { ...state.activeForm, type: action.payload, crop: state.images[action.payload].crop, src: state.images[action.payload].url,ratio:1/1 }, modal: { ...state.modal, crop: { isActive: true } }
+          ...state, activeForm: { ...state.activeForm, type: action.payload, crop: state.images[action.payload].crop, src: state.images[action.payload].url, ratio: 1 / 1 }, modal: { ...state.modal, crop: { isActive: true } }
         }
       }
       return state;
@@ -138,7 +144,7 @@ const reducer = (state, action) => {
 
     case 'set-templates':
       return {
-       ...state, templates: action.payload
+        ...state, templates: action.payload
       }
 
     case 'clear':
@@ -156,9 +162,9 @@ function App() {
   const canvasRef = useRef(null);
   useEffect(() => {
     setTemplates(templateList)
-    dispatch({type:'set-templates',payload:templateList})
+    dispatch({ type: 'set-templates', payload: templateList })
   }, [])
-  
+
   // Function to trigger download
   const handleExport = (elementref, name) => {
     const uri = elementref.current.toDataURL();
@@ -169,6 +175,9 @@ function App() {
     link.click();
     // window.open(uri, '_blank');
   };
+  useEffect(()=>{
+ console.log(canvasData.images)
+  },[canvasData.images])
 
   const handleGenerate = () => {
     showModal('template')
@@ -199,7 +208,7 @@ function App() {
 
 
   };
-  
+
   return (
     <div className="App">
       <div className=''>
@@ -243,8 +252,8 @@ function App() {
                 </TabContent>
 
               </Tab> */}
-{              templates.length>0&&<PreviewCanvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
-}            </div>
+              {templates.length > 0 && <PreviewCanvas preview={true} template={templateList[canvasData.activeTemplate.templateIndex][canvasData.activeTemplate.sizeIndex]} canvasRef={canvasRef} setTemplates={setTemplates}  {...canvasData} />
+              }            </div>
             {/* <div className="main-img">
               <img data-index={canvasData.activeTemplate.templateIndex} src={canavsSrc} alt="" />
             </div> */}
